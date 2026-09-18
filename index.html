@@ -1548,6 +1548,102 @@ input[type=range]::-webkit-slider-thumb{
 .stk-frozen { font-size:.58rem; color:var(--nr); font-family:'Orbitron',sans-serif;
   letter-spacing:1px; animation:rpulse .8s infinite; margin-top:4px; text-align:center; }
 
+/* ═══ MODULE 1 — ROOM GATE SCREEN ═══ */
+#room-gate{display:none;position:fixed;inset:0;z-index:99998;background:var(--bg0);
+  align-items:center;justify-content:center;flex-direction:column;gap:16px;}
+#room-gate.show{display:flex;}
+.rg-icon{font-size:2.4rem;}
+.rg-title{font-family:'Orbitron',sans-serif;font-size:.9rem;letter-spacing:3px;
+  color:var(--nr);text-shadow:var(--gR);}
+.rg-msg{font-size:.7rem;color:var(--td);text-align:center;max-width:360px;line-height:1.7;}
+
+/* ═══ MODULE 2 — LAND REGISTRY PANEL ═══ */
+.lr-zone{background:var(--bg2);border:1px solid var(--bd-b);border-radius:4px;padding:12px;margin-bottom:10px;}
+.lr-zone-title{font-family:'Orbitron',sans-serif;font-size:.65rem;letter-spacing:2px;margin-bottom:10px;}
+.lr-zone-title.infra{color:var(--ng2);}
+.lr-zone-title.agri{color:var(--ng);}
+.bld-card{background:var(--bg3);border:1px solid var(--bd-b);border-radius:3px;padding:10px 12px;
+  display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:6px;}
+.bld-info{flex:1;}
+.bld-name{font-family:'Orbitron',sans-serif;font-size:.65rem;color:var(--ng2);}
+.bld-meta{font-size:.6rem;color:var(--td);margin-top:2px;}
+.bld-locked{font-size:.55rem;color:var(--nr);letter-spacing:1px;animation:rpulse 1s infinite;}
+.crop-row{display:flex;align-items:center;gap:8px;margin-bottom:8px;font-size:.7rem;}
+.crop-row label{color:var(--td);min-width:80px;}
+.crop-row input[type=range]{flex:1;}
+.crop-row .crop-ha{font-family:'Orbitron',sans-serif;font-size:.7rem;color:var(--nb);min-width:55px;text-align:right;}
+.crop-locked-badge{background:rgba(255,49,49,.1);border:1px solid var(--nr);border-radius:2px;
+  padding:3px 10px;font-size:.6rem;color:var(--nr);font-family:'Orbitron',sans-serif;letter-spacing:1px;}
+
+/* ═══ MODULE 3 — CYBER DUEL ENGINE ═══ */
+#cyber-duel-overlay{
+  display:none;position:fixed;inset:0;z-index:99997;background:rgba(0,0,0,.96);
+  backdrop-filter:blur(4px);align-items:center;justify-content:center;flex-direction:column;gap:14px;
+}
+#cyber-duel-overlay.open{display:flex;}
+.cd-window{width:520px;max-width:96vw;background:#010d03;border:2px solid var(--nr);
+  border-radius:6px;box-shadow:0 0 60px rgba(255,49,49,.3);overflow:hidden;}
+.cd-header{background:rgba(255,49,49,.08);border-bottom:1px solid rgba(255,49,49,.3);
+  padding:12px 18px;display:flex;align-items:center;justify-content:space-between;}
+.cd-title{font-family:'Orbitron',sans-serif;font-size:.72rem;letter-spacing:2px;color:var(--nr);}
+.cd-timer{font-family:'Orbitron',sans-serif;font-size:1.2rem;font-weight:900;color:var(--nr);}
+.cd-body{padding:18px;}
+.cd-seq-label{font-family:'Orbitron',sans-serif;font-size:.58rem;color:var(--td);
+  letter-spacing:2px;margin-bottom:8px;}
+.cd-seq-row{display:flex;gap:8px;margin-bottom:14px;}
+.cd-hex-target{background:rgba(255,49,49,.1);border:1px solid rgba(255,49,49,.4);border-radius:3px;
+  padding:6px 10px;font-family:'Share Tech Mono',monospace;font-size:.8rem;color:var(--nr);}
+.cd-hex-target.matched{background:rgba(57,255,20,.1);border-color:var(--ng);color:var(--ng);}
+.cd-grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:12px;}
+.cd-cell{background:rgba(0,242,255,.05);border:1px solid rgba(0,242,255,.2);border-radius:3px;
+  padding:8px 4px;text-align:center;cursor:pointer;font-family:'Share Tech Mono',monospace;
+  font-size:.72rem;color:var(--nb);transition:all .15s;}
+.cd-cell:hover{background:rgba(0,242,255,.15);box-shadow:var(--gB);}
+.cd-cell.active{background:rgba(57,255,20,.15);border-color:var(--ng);color:var(--ng);}
+.cd-progress-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.cd-prog-block{background:var(--bg2);border:1px solid var(--bd-b);border-radius:3px;padding:8px;}
+.cd-prog-label{font-size:.58rem;color:var(--td);font-family:'Orbitron',sans-serif;letter-spacing:1px;margin-bottom:4px;}
+.cd-prog-bar-wrap{height:8px;background:rgba(255,255,255,.06);border-radius:4px;overflow:hidden;}
+.cd-prog-bar{height:100%;border-radius:4px;transition:width .4s ease;}
+.cd-prog-bar.atk{background:var(--nr);}
+.cd-prog-bar.def{background:var(--ng);}
+
+/* Defender panic alert */
+#cyber-panic-overlay{
+  display:none;position:fixed;inset:0;z-index:99996;background:rgba(120,0,0,.92);
+  backdrop-filter:blur(6px);align-items:center;justify-content:center;flex-direction:column;gap:16px;
+}
+#cyber-panic-overlay.open{display:flex;animation:rpulse .6s infinite;}
+.cp-title{font-family:'Orbitron',sans-serif;font-size:1rem;font-weight:900;letter-spacing:3px;
+  color:#fff;text-align:center;text-shadow:0 0 20px #fff;}
+.cp-sub{font-size:.75rem;color:rgba(255,255,255,.7);text-align:center;}
+.cp-btn{font-family:'Orbitron',sans-serif;font-size:.75rem;letter-spacing:2px;padding:14px 30px;
+  background:rgba(255,255,255,.1);border:2px solid #fff;color:#fff;border-radius:4px;
+  cursor:pointer;transition:all .2s;}
+.cp-btn:hover{background:rgba(255,255,255,.25);box-shadow:0 0 20px rgba(255,255,255,.4);}
+
+/* ═══ MODULE 4 — TERMINATION MODAL ═══ */
+#termination-overlay{
+  display:none;position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,.97);
+  align-items:center;justify-content:center;flex-direction:column;gap:18px;
+}
+#termination-overlay.open{display:flex;}
+.tm-computing{font-family:'Orbitron',sans-serif;font-size:.75rem;letter-spacing:3px;
+  color:var(--ng2);animation:rpulse .8s infinite;text-align:center;}
+.tm-winner-box{border:2px solid var(--ng2);border-radius:6px;padding:28px 36px;
+  text-align:center;max-width:600px;box-shadow:0 0 80px rgba(255,215,0,.25);}
+.tm-congrats{font-family:'Orbitron',sans-serif;font-size:.72rem;letter-spacing:2px;
+  color:var(--ng2);margin-bottom:8px;}
+.tm-winner-name{font-family:'Orbitron',sans-serif;font-size:1.4rem;font-weight:900;
+  color:var(--ng);text-shadow:var(--gG);margin-bottom:8px;}
+.tm-tagline{font-size:.72rem;color:var(--td);line-height:1.6;margin-bottom:18px;}
+.tm-table{width:100%;border-collapse:collapse;font-size:.7rem;}
+.tm-table th{font-family:'Orbitron',sans-serif;font-size:.55rem;color:var(--td);
+  padding:5px 8px;border-bottom:1px solid var(--bd-b);text-align:left;}
+.tm-table td{padding:7px 8px;border-bottom:1px solid rgba(255,255,255,.04);}
+.tm-table tr:first-child td{color:var(--ng2);font-family:'Orbitron',sans-serif;}
+.tm-rank{font-family:'Orbitron',sans-serif;font-size:.65rem;color:var(--ng2);}
+
 @media(max-width:900px){
   #p-layout{grid-template-columns:1fr;}
   #p-sidebar{flex-direction:row;overflow-x:auto;padding:7px;border-right:none;border-bottom:1px solid var(--bd-b);}
@@ -2361,6 +2457,10 @@ input[type=range]::-webkit-slider-thumb{
     </div>
     <div style="display:flex;align-items:center;gap:12px;">
       <span style="font-size:.6rem;color:rgba(255,170,0,.35);letter-spacing:1px;">READ-ONLY SPECTATOR MODE</span>
+      <button class="hbtn" id="invite-link-btn" onclick="copyInviteLink()"
+        style="font-size:.6rem;padding:5px 12px;background:rgba(255,170,0,.1);border-color:var(--ho);">
+        🔗 COPY INVITE LINK
+      </button>
     </div>
   </div>
 
@@ -2468,6 +2568,20 @@ input[type=range]::-webkit-slider-thumb{
           </div>
         </div>
 
+      </div>
+    </div>
+
+    <!-- MODULE 4 — TERMINATE SIMULATION -->
+    <div class="hc dc" style="border-color:var(--nr);">
+      <div class="hct red">☠ SIMULATION CONTROL — MASTER TERMINATION</div>
+      <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;">
+        <div style="font-size:.68rem;color:var(--td);flex:1;">
+          Ends the simulation for all connected nations simultaneously. Computes final Net Worth valuations and declares a Supreme winner. This action is irreversible.
+        </div>
+        <button class="hbtn hbr" style="padding:10px 20px;font-size:.68rem;letter-spacing:1.5px;"
+          onclick="hostTerminateSimulation()">
+          ☠ TERMINATE SIMULATION &amp; DECLARE SUPREMACY
+        </button>
       </div>
     </div>
 
@@ -2620,6 +2734,73 @@ input[type=range]::-webkit-slider-thumb{
   </div>
 </div>
 
+<!-- ══ MODULE 1: ROOM GATE ══ -->
+<div id="room-gate">
+  <div class="rg-icon">🔒</div>
+  <div class="rg-title">INVALID ACCESS: INVITATION LINK REQUIRED</div>
+  <div class="rg-msg">
+    This simulation is session-restricted.<br>
+    You must access this terminal via an authorised Host invite link.<br>
+    Contact your Game Master to obtain a valid room token.
+  </div>
+</div>
+
+<!-- ══ MODULE 3: DEFENDER PANIC ALERT ══ -->
+<div id="cyber-panic-overlay">
+  <div class="cp-title" id="cp-title">⚠ CRITICAL WARNING: NATION UNDER CYBER ATTACK!</div>
+  <div class="cp-sub" id="cp-sub">INTERCEPT IMMEDIATELY — ENEMY IN YOUR MAINFRAME</div>
+  <button class="cp-btn" id="cp-engage-btn" onclick="engageCounterMeasures()">
+    ⚡ ENGAGE COUNTER-MEASURES
+  </button>
+</div>
+
+<!-- ══ MODULE 3: CYBER DUEL GAME WINDOW ══ -->
+<div id="cyber-duel-overlay">
+  <div class="cd-window">
+    <div class="cd-header">
+      <div class="cd-title" id="cd-role-label">⚔ CYBER DUEL — ATTACKER</div>
+      <div class="cd-timer" id="cd-timer">90</div>
+    </div>
+    <div class="cd-body">
+      <div class="cd-seq-label">TARGET SEQUENCE</div>
+      <div class="cd-seq-row" id="cd-seq-row"></div>
+      <div class="cd-grid-4" id="cd-grid"></div>
+      <div style="font-size:.63rem;color:var(--td);margin-bottom:10px;text-align:center;" id="cd-status-msg"></div>
+      <div class="cd-progress-row">
+        <div class="cd-prog-block">
+          <div class="cd-prog-label">⚔ ATTACKER</div>
+          <div class="cd-prog-bar-wrap"><div class="cd-prog-bar atk" id="cd-atk-bar" style="width:0%"></div></div>
+          <div style="font-size:.6rem;color:var(--nr);margin-top:3px;" id="cd-atk-pct">0%</div>
+        </div>
+        <div class="cd-prog-block">
+          <div class="cd-prog-label">🛡 DEFENDER</div>
+          <div class="cd-prog-bar-wrap"><div class="cd-prog-bar def" id="cd-def-bar" style="width:0%"></div></div>
+          <div style="font-size:.6rem;color:var(--ng);margin-top:3px;" id="cd-def-pct">0%</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MODULE 4: TERMINATION MODAL ══ -->
+<div id="termination-overlay">
+  <div class="tm-computing" id="tm-computing-msg">
+    ◌ COMPUTING FINAL NATIONAL POWER INDICES FOR THE BATTLE OF SUPREMACY…
+  </div>
+  <div class="tm-winner-box" id="tm-winner-box" style="display:none;">
+    <div class="tm-congrats">🏆 BATTLE OF SUPREMACY — FINAL VERDICT</div>
+    <div class="tm-winner-name" id="tm-winner-name">—</div>
+    <div class="tm-tagline" id="tm-tagline">—</div>
+    <table class="tm-table" id="tm-rank-table">
+      <thead><tr>
+        <th>#</th><th>NATION</th><th>GDP</th><th>PORTFOLIO</th>
+        <th>INFRASTRUCTURE</th><th>AGRICULTURE</th><th>TOTAL VALUATION</th>
+      </tr></thead>
+      <tbody id="tm-rank-body"></tbody>
+    </table>
+  </div>
+</div>
+
 <script>
 'use strict';
 // ═══════════════════════════════════════════════════════
@@ -2716,6 +2897,22 @@ const G = {
   // Sanction
   sanctioned: false,
   sanctionExpiry: 0,
+
+  // ── MODULE 2: Land Registry ────────────────────────────
+  infraZoneHa: 0,          // hectares consumed by buildings (max 5000)
+  buildings: [],           // [{ id, type, ha, cost, builtCycle }]
+  cropAllocations: {       // Ha per crop in the agricultural zone (≥5000 Ha total)
+    wheat:0, corn:0, rice:0, soy:0,
+  },
+  cropLockedUntilCycle: 0, // reallocate UI locked until this cycle
+  foodReservesTons: 0,     // cumulative food tonnes from yield engine
+
+  // ── MODULE 3: Cyber Duel ──────────────────────────────
+  underCyberWar: false,    // true while this nation is in an active duel
+  activeDuelId: null,      // Firestore doc id of the active CyberDuel
+
+  // ── MODULE 4: Termination snapshot ───────────────────
+  finalValuation: 0,       // computed at game-end
 };
 
 // ── Catalogs ──
@@ -2867,11 +3064,58 @@ const CUSTOM_STOCKS = [];
 const MACRO_QUEUE = [];
 
 // ── Simulated AI nations for the Host Telemetry (+ the human player)
-const AI_NATIONS = [
-  { id:'ai1', nation:'VEXORIA',   cmdr:'Marshal Vex',   gdp:3_200_000, pop:820_000,   sick:12000, food:28000, mil:4500,  edu:2, firewallDefense:20 },
-  { id:'ai2', nation:'NORDCLAVE', cmdr:'Admiral Klav',  gdp:7_100_000, pop:1_400_000, sick:8000,  food:61000, mil:12800, edu:3, firewallDefense:45 },
-  { id:'ai3', nation:'IRONSHARD', cmdr:'Warlord Shard', gdp:1_900_000, pop:560_000,   sick:4000,  food:15000, mil:2100,  edu:1, firewallDefense:10 },
-];
+// ── Live Nations Roster — replaces hardcoded AI_NATIONS ──────
+// Populated by attachNationsListener() via onSnapshot on /nations.
+// Shape per entry: { id, nation, cmdr, gdp, pop, mil, edu,
+//                   food, firewallDefense, inCivilWar, allianceWith,
+//                   sanctioned, sanctionExpiry, isHuman }
+let LIVE_NATIONS = [];
+let _nationsUnsubscribe = null;
+
+// Attach a real-time listener to /nations — filters out own nation.
+// Called once from enterPlayerShell() after MP.nationKey is set.
+function attachNationsListener() {
+  if (_nationsUnsubscribe) { _nationsUnsubscribe(); _nationsUnsubscribe = null; }
+  if (!_db) return;
+
+  const colRef = _collection(_db, 'nations');
+  _nationsUnsubscribe = _onSnapshot(
+    colRef,
+    (snap) => {
+      LIVE_NATIONS = [];
+      snap.forEach(docSnap => {
+        // Exclude the current player's own nation
+        if (docSnap.id === MP.nationKey) return;
+        const d = docSnap.data();
+        LIVE_NATIONS.push({
+          id:              docSnap.id,
+          nation:          d.nationName         || docSnap.id,
+          cmdr:            d.commanderName      || 'Unknown',
+          gdp:             d.gdp                ?? 0,
+          pop:             d.population         ?? 0,
+          mil:             d.military
+                             ? Object.values(d.military).reduce((s, u) => s + (u.count || 0), 0)
+                             : 0,
+          edu:             d.eduLevel           ?? 1,
+          food:            d.foodStock          ?? 0,
+          firewallDefense: d.firewallDefense    ?? 0,
+          inCivilWar:      d.isDrought          ?? false, // proxy: host can set per-nation flags
+          allianceWith:    null,   // alliance state is local (WAR object)
+          sanctioned:      d.sanctioned         ?? false,
+          sanctionExpiry:  d.sanctionExpiry     ?? 0,
+          isHuman:         true,   // all Firestore entries are real players
+        });
+      });
+
+      // Re-render nations panel if it is currently visible
+      const np = document.getElementById('pn-nations');
+      if (np && np.classList.contains('act')) renderNationsPanel();
+    },
+    (err) => {
+      console.warn('[BOS] Nations listener error:', err.message);
+    }
+  );
+}
 
 // ═══════════════════════════════════════════════════════
 // APP STATE (role / mode)
@@ -2918,14 +3162,24 @@ let _collection, _doc, _getDoc, _setDoc, _updateDoc,
 
 // ── Multiplayer session state ────────────────────────────────
 let MP = {
-  enabled:       false,   // true only after successful found/join
-  isLeader:      false,   // true for the nation founder (Host-Worker authority)
-  nationKey:     '',      // Firestore doc id = sanitised nation name
+  enabled:       false,
+  isLeader:      false,
+  nationKey:     '',
   commanderName: '',
-  lastWriteTs:   0,       // timestamp of our last write (echo-suppression guard)
-  localFallback: false,   // true when dropped to localStorage mode
-  _clickTs:      0,       // last button click timestamp (throttle guard)
+  lastWriteTs:   0,
+  localFallback: false,
+  _clickTs:      0,
+  roomId:        '',       // 6-char token, e.g. "ALPHA9" — scopes all Firestore paths
 };
+
+// ── Room-scoped Firestore path helper ────────────────────────
+// All documents live under /rooms/{roomId}/... to prevent
+// cross-contamination across concurrent game sessions.
+function roomPath(...segments) {
+  // Returns a _doc() reference: _doc(_db, 'rooms', roomId, ...segments)
+  if (!MP.roomId) throw new Error('[BOS] roomId not set — call after foundNation/joinNation');
+  return _doc(_db, 'rooms', MP.roomId, ...segments);
+}
 
 // ── Click throttle: prevents double-firing on 40-60 laptop network lag ──
 // Wrap any action that writes to Firestore with this — returns false if
@@ -3029,6 +3283,10 @@ const G_SERIALISE_KEYS = [
   'military','stocks','portfolio',
   'customStocks',
   'sanctioned','sanctionExpiry','nationName','commanderName',
+  // Module 2 — Land Registry
+  'infraZoneHa','buildings','cropAllocations','cropLockedUntilCycle','foodReservesTons',
+  // Module 3 — Cyber Duel
+  'underCyberWar','activeDuelId',
   // Project Silicon
   'techParkEfficiency','rdvActiveProject','rdvBreakthroughUnlocked',
   'hydroponicCyclesLeft','hftTransactionsLeft',
@@ -3460,11 +3718,11 @@ function enterPlayerShell() {
   if (nationEl) nationEl.textContent = G.nationName;
   APP_MODE = 'player';
   initGame();
-  // Mount the unified sync engine after initGame so all listeners start fresh.
-  // MP.nationKey is set by foundNation / joinNation before this is called.
   if (MP.enabled && MP.nationKey) {
     attachGameSyncEngine(MP.nationKey, MP.isLeader);
   }
+  // Start live rival nations listener — fires immediately and on every join/leave
+  attachNationsListener();
 }
 
 // ── Initial G document structure for Firestore ───────────
@@ -6086,7 +6344,8 @@ async function refreshCyberTargets() {
   if (!grid) return;
   grid.innerHTML = `<div class="td" style="font-size:.65rem;text-align:center;padding:14px;">Loading nations…</div>`;
 
-  // Build target list: in MP mode pull from Firestore; otherwise use AI_NATIONS
+  // Build target list: in MP mode pull from Firestore via queryAllNations(),
+  // otherwise use LIVE_NATIONS cache (populated by attachNationsListener)
   let targets = [];
 
   if (MP.enabled && _db) {
@@ -6108,9 +6367,9 @@ async function refreshCyberTargets() {
     }
   }
 
-  // Always include AI nations as additional targets
-  if (typeof AI_NATIONS !== 'undefined') {
-    AI_NATIONS.forEach(n => {
+  // In offline/single-player mode use the live roster cache (will be empty if no peers)
+  if (!MP.enabled) {
+    LIVE_NATIONS.forEach(n => {
       targets.push({ id: n.id, name: n.nation, fw: n.firewallDefense ?? 0, gdp: n.gdp, isLive: false });
     });
   }
@@ -6556,14 +6815,14 @@ function hostInject(playerId, isHuman) {
 
 // ── Telemetry table ──
 function getAllPlayers() {
-  // Human player as first entry, AI nations after
+  // Human player as first entry, then all live rival nations from Firestore
   return [
     {
       id:'human', nation:G.nationName, cmdr:G.commanderName, isHuman:true,
       gdp:G.gdp, pop:G.population, sick:G.currentSick,
       food:G.foodStock, mil:getTotalPwr(), edu:G.eduLevel
     },
-    ...AI_NATIONS.map(n => ({ ...n, isHuman:false }))
+    ...LIVE_NATIONS.map(n => ({ ...n, isHuman:false }))
   ];
 }
 
@@ -6607,18 +6866,7 @@ function renderTelemTable() {
   set('ht-dth', f(G.totalDeaths));
 }
 
-// ── Tick AI for telemetry ──
-function tickAI() {
-  AI_NATIONS.forEach(n => {
-    n.gdp  = Math.floor(n.gdp  * (1.015 + Math.random() * 0.04 - 0.01));
-    n.pop  = Math.floor(n.pop  * (1.012 + Math.random() * 0.01));
-    n.mil  = Math.floor(n.mil  * (1 + Math.random() * 0.015));
-    n.sick = Math.floor(n.pop  * (G.pandemicActive ? 0.2 : 0.01 + Math.random() * 0.03));
-    n.food = G.isDrought
-      ? Math.max(0, n.food - Math.floor(n.pop * 0.04))
-      : Math.floor(n.food * (1 + Math.random() * 0.02));
-  });
-}
+// tickAI removed — rival nation stats update live via Firestore onSnapshot (LIVE_NATIONS)
 
 // ── Host telemetry auto-refresh ──
 function startHostTelemRefresh() {
@@ -6662,32 +6910,27 @@ const WAR = {
   civilWarMilLost: 0,
 
   // Current nation being viewed in profile modal
-  viewingNation: null,     // AI_NATIONS entry
+  viewingNation: null,     // LIVE_NATIONS entry currently open in profile modal
 };
 
-// Extended AI nations with civil war & alliance state
-AI_NATIONS.forEach(n => {
-  n.inCivilWar = false;
-  n.allianceWith = null;
-  n.sanctioned = false;
-  n.sanctionExpiry = 0;
-});
+// WAR object initialised below — alliance/civil-war state is local only
 
 // ── Power helpers ──
 function getEffectivePower(playerId) {
-  // Returns actual combat power including alliance bonus
   if (playerId === 'human') {
     const base = getTotalPwr();
     if (WAR.alliedWith) {
-      const ally = AI_NATIONS.find(n => n.id === WAR.alliedWith);
+      const ally = LIVE_NATIONS.find(n => n.id === WAR.alliedWith);
       return Math.floor((base + (ally ? ally.mil : 0)) * 0.9);
     }
     return base;
   }
-  const n = AI_NATIONS.find(x => x.id === playerId);
+  const n = LIVE_NATIONS.find(x => x.id === playerId);
   if (!n) return 0;
   if (n.allianceWith) {
-    const ally = n.allianceWith === 'human' ? { mil: getTotalPwr() } : AI_NATIONS.find(x => x.id === n.allianceWith);
+    const ally = n.allianceWith === 'human'
+      ? { mil: getTotalPwr() }
+      : LIVE_NATIONS.find(x => x.id === n.allianceWith);
     return Math.floor((n.mil + (ally ? ally.mil : 0)) * 0.9);
   }
   return n.mil;
@@ -6695,45 +6938,67 @@ function getEffectivePower(playerId) {
 
 function getBaseGDP(playerId) {
   if (playerId === 'human') return G.gdp;
-  const n = AI_NATIONS.find(x => x.id === playerId);
+  const n = LIVE_NATIONS.find(x => x.id === playerId);
   return n ? n.gdp : 0;
 }
 
 function applyGDPChange(playerId, delta) {
-  if (playerId === 'human') { G.gdp = Math.max(0, G.gdp + delta); }
-  else {
-    const n = AI_NATIONS.find(x => x.id === playerId);
+  if (playerId === 'human') {
+    G.gdp = Math.max(0, G.gdp + delta);
+  } else {
+    // For live nations, write the delta to Firestore atomically
+    if (MP.enabled && _db) {
+      const ref = _doc(_db, 'nations', playerId);
+      _updateDoc(ref, { gdp: _increment(delta), _updatedAt: Date.now() })
+        .catch(e => console.warn('[BOS] applyGDPChange write:', e.message));
+    }
+    // Also update local cache so UI reflects immediately
+    const n = LIVE_NATIONS.find(x => x.id === playerId);
     if (n) n.gdp = Math.max(0, n.gdp + delta);
   }
 }
 
-// ── NATIONS PANEL render ──
+// ── NATIONS PANEL render — uses live LIVE_NATIONS roster ──
 function renderNationsPanel() {
   const list = document.getElementById('nations-list');
   if (!list) return;
-  list.innerHTML = '';
 
   // Alliance bar
   const aBar = document.getElementById('alliance-status-bar');
   const cwBar = document.getElementById('civil-war-bar');
   if (WAR.alliedWith) {
-    const ally = AI_NATIONS.find(n => n.id === WAR.alliedWith);
-    aBar.style.display = 'block';
+    const ally = LIVE_NATIONS.find(n => n.id === WAR.alliedWith);
+    if (aBar) aBar.style.display = 'block';
     const allyNameEl = document.getElementById('ally-nation-name');
     if (allyNameEl && ally) allyNameEl.textContent = ally.nation;
   } else {
-    aBar.style.display = 'none';
+    if (aBar) aBar.style.display = 'none';
   }
   if (cwBar) cwBar.style.display = WAR.civilWarActive ? 'block' : 'none';
 
-  AI_NATIONS.forEach(n => {
+  list.innerHTML = '';
+
+  if (LIVE_NATIONS.length === 0) {
+    list.innerHTML = `
+      <div style="text-align:center;padding:24px;color:var(--td);font-size:.68rem;">
+        ${MP.enabled
+          ? '◌ Waiting for rival nations to connect…'
+          : '◌ No rival nations available in single-player mode.'}
+      </div>`;
+    return;
+  }
+
+  LIVE_NATIONS.forEach(n => {
     const isAlly = WAR.alliedWith === n.id;
     const div = document.createElement('div');
     div.className = 'nat-row' + (isAlly ? ' allied' : '');
     div.onclick = () => openNatProfile(n);
     div.innerHTML = `
       <div>
-        <div class="nr-name">${n.nation} <span class="nr-badge ${isAlly ? 'ally-badge' : 'neutral-badge'}">${isAlly ? '✦ ALLY' : '◈ NEUTRAL'}</span>${n.inCivilWar ? '<span class="nr-badge" style="background:rgba(255,49,49,.15);border:1px solid var(--nr);color:var(--nr);margin-left:5px;">CIVIL WAR</span>' : ''}</div>
+        <div class="nr-name">${n.nation}
+          <span class="nr-badge ${isAlly ? 'ally-badge' : 'neutral-badge'}">${isAlly ? '✦ ALLY' : '◈ RIVAL'}</span>
+          ${n.inCivilWar ? '<span class="nr-badge" style="background:rgba(255,49,49,.15);border:1px solid var(--nr);color:var(--nr);margin-left:5px;">CIVIL WAR</span>' : ''}
+        </div>
         <div class="nr-stats">GDP: $${f(n.gdp)} &nbsp;·&nbsp; Pop: ${f(n.pop)} &nbsp;·&nbsp; Cmdr: ${n.cmdr}</div>
       </div>
       <div class="nr-mil">${f(n.mil)}<span style="font-size:.58rem;color:var(--td);display:block;text-align:center;">MIL PWR</span></div>`;
@@ -6808,7 +7073,7 @@ function initiateAttack() {
   let attackerAlliance = null, defenderAlliance = null;
 
   if (humanInAlliance) {
-    attackerAlliance = AI_NATIONS.find(n => n.id === WAR.alliedWith);
+    attackerAlliance = LIVE_NATIONS.find(n => n.id === WAR.alliedWith);
     attackerPower = Math.floor((getTotalPwr() + (attackerAlliance?.mil || 0)) * 0.9);
   } else {
     attackerPower = getTotalPwr();
@@ -6816,7 +7081,7 @@ function initiateAttack() {
 
   if (targetInAlliance) {
     const tAllyId = target.allianceWith;
-    defenderAlliance = tAllyId === 'human' ? null : AI_NATIONS.find(n => n.id === tAllyId);
+    defenderAlliance = tAllyId === 'human' ? null : LIVE_NATIONS.find(n => n.id === tAllyId);
     defenderPower = Math.floor((target.mil + (defenderAlliance?.mil || 0)) * 0.9);
   } else {
     defenderPower = target.mil;
@@ -7051,7 +7316,7 @@ function acceptAlliance() {
   if (!p) { closeAllianceModal(); return; }
   if (p._aiAccepts) {
     WAR.alliedWith = p.fromId;
-    const nation = AI_NATIONS.find(n => n.id === p.fromId);
+    const nation = LIVE_NATIONS.find(n => n.id === p.fromId);
     if (nation) {
       nation.allianceWith = 'human';
       const combined = Math.floor((getTotalPwr() + nation.mil) * 0.9);
@@ -7082,7 +7347,7 @@ function closeAllianceModal() {
 
 function dissolveAlliance() {
   if (!WAR.alliedWith) return;
-  const ally = AI_NATIONS.find(n => n.id === WAR.alliedWith);
+  const ally = LIVE_NATIONS.find(n => n.id === WAR.alliedWith);
   if (ally) { ally.allianceWith = null; }
   WAR.alliedWith = null;
   WAR.alliancePower = 0;
@@ -7131,14 +7396,19 @@ function hostTriggerCivilWar(targetId) {
     renderNationsPanel();
 
   } else {
-    const n = AI_NATIONS.find(x => x.id === targetId);
-    if (!n) return;
-    n.gdp = Math.max(0, Math.floor(n.gdp * 0.80));
+    const n = LIVE_NATIONS.find(x => x.id === targetId);
+    if (!n) { hlog(`☢ Civil War: target ${targetId} not found in live roster.`, 'hr'); return; }
+    // Write penalties to Firestore atomically via applyGDPChange
+    const gdpPenalty  = -Math.floor(n.gdp * 0.20);
+    const milPenalty  = -Math.floor(n.mil * 0.30);
+    applyGDPChange(targetId, gdpPenalty);
+    // Update local cache immediately for host UI
+    n.gdp = Math.max(0, n.gdp + gdpPenalty);
     n.pop = Math.max(1, Math.floor(n.pop * 0.95));
-    n.mil = Math.max(0, Math.floor(n.mil * 0.70));
+    n.mil = Math.max(0, n.mil + milPenalty);
     n.inCivilWar = true;
     hlog(`☢ Civil War triggered on ${n.nation}. GDP −20%, Pop −5%, Mil −30%.`, 'hr');
-    // Auto-resolve AI civil war after 3 cycles (simulated)
+    // Auto-clear civil war flag in cache after 3 cycles
     setTimeout(() => { n.inCivilWar = false; }, 180000);
   }
 
@@ -7181,7 +7451,7 @@ function renderCivilWarTargetList() {
   list.innerHTML = '';
   const all = [
     { id:'human', nation: G.nationName || 'PLAYER NATION', inCW: WAR.civilWarActive },
-    ...AI_NATIONS.map(n => ({ id: n.id, nation: n.nation, inCW: n.inCivilWar }))
+    ...LIVE_NATIONS.map(n => ({ id: n.id, nation: n.nation, inCW: n.inCivilWar || false }))
   ];
   all.forEach(p => {
     const row = document.createElement('div');
@@ -7211,7 +7481,7 @@ function hostTriggerWorldWar() {
   // Build all combatants
   const combatants = [
     { id:'human', name: G.nationName || 'YOUR NATION', gdp: G.gdp, mil: getEffectivePower('human'), isHuman: true },
-    ...AI_NATIONS.map(n => ({ id: n.id, name: n.nation, gdp: n.gdp, mil: n.mil, isHuman: false }))
+    ...LIVE_NATIONS.map(n => ({ id: n.id, name: n.nation, gdp: n.gdp, mil: n.mil, isHuman: false }))
   ];
 
   // Shuffle for random matchup order
@@ -7235,10 +7505,10 @@ function hostTriggerWorldWar() {
 
       // Apply changes
       if (winner.isHuman) { G.gdp = Math.max(0, G.gdp + spoils); }
-      else { const wn = AI_NATIONS.find(n=>n.id===winner.id); if(wn) wn.gdp = Math.max(0, wn.gdp + spoils); }
+      else { applyGDPChange(winner.id, spoils); }
 
       if (loser.isHuman) { G.gdp = Math.max(0, G.gdp - loserLoss); }
-      else { const ln = AI_NATIONS.find(n=>n.id===loser.id); if(ln) ln.gdp = Math.max(0, ln.gdp - loserLoss); }
+      else { applyGDPChange(loser.id, -loserLoss); }
 
       results.push({
         matchup: `${a.name} vs ${b.name}`,
@@ -7296,7 +7566,7 @@ renderTelemTable = function() {
   rows.forEach((tr, i) => {
     const p = players[i];
     if (!p) return;
-    const inCW = p.isHuman ? WAR.civilWarActive : (AI_NATIONS.find(n=>n.id===p.id)?.inCivilWar || false);
+    const inCW = p.isHuman ? WAR.civilWarActive : (LIVE_NATIONS.find(n=>n.id===p.id)?.inCivilWar || false);
     const td = document.createElement('td');
     td.innerHTML = inCW
       ? `<span style="color:var(--hr);font-size:.62rem;font-family:'Orbitron',sans-serif;animation:rpulse 1s infinite;">☢ ACTIVE</span>`
