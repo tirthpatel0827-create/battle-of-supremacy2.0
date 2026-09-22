@@ -1548,14 +1548,44 @@ input[type=range]::-webkit-slider-thumb{
 .stk-frozen { font-size:.58rem; color:var(--nr); font-family:'Orbitron',sans-serif;
   letter-spacing:1px; animation:rpulse .8s infinite; margin-top:4px; text-align:center; }
 
-/* ═══ MODULE 1 — ROOM GATE SCREEN ═══ */
+/* ═══ MODULE 1 — LOBBY SCREEN ═══ */
 #room-gate{display:none;position:fixed;inset:0;z-index:99998;background:var(--bg0);
-  align-items:center;justify-content:center;flex-direction:column;gap:16px;}
+  align-items:flex-start;justify-content:center;overflow-y:auto;padding:30px 16px 40px;}
 #room-gate.show{display:flex;}
-.rg-icon{font-size:2.4rem;}
-.rg-title{font-family:'Orbitron',sans-serif;font-size:.9rem;letter-spacing:3px;
-  color:var(--nr);text-shadow:var(--gR);}
-.rg-msg{font-size:.7rem;color:var(--td);text-align:center;max-width:360px;line-height:1.7;}
+.lobby-wrap{width:100%;max-width:520px;display:flex;flex-direction:column;gap:18px;}
+.lobby-title{font-family:'Orbitron',sans-serif;font-size:1.5rem;font-weight:900;
+  letter-spacing:4px;color:var(--nb);text-shadow:var(--gB);text-align:center;margin-bottom:4px;}
+.lobby-sub{font-size:.65rem;color:var(--td);text-align:center;letter-spacing:2px;margin-bottom:4px;}
+.lobby-divider{height:1px;background:linear-gradient(90deg,transparent,var(--nb),transparent);margin:4px 0 8px;}
+.lobby-card{background:var(--bg1);border:1px solid var(--bd-b);border-radius:6px;
+  overflow:hidden;box-shadow:0 0 30px rgba(0,242,255,.06);}
+.lobby-card-bar{height:2px;}
+.lobby-card-bar.host{background:linear-gradient(90deg,var(--ng2),var(--ng));}
+.lobby-card-bar.join{background:linear-gradient(90deg,var(--nb),var(--ng));}
+.lobby-card-body{padding:20px 22px;}
+.lobby-card-title{font-family:'Orbitron',sans-serif;font-size:.72rem;letter-spacing:2px;margin-bottom:14px;}
+.lobby-card-title.host{color:var(--ng2);}
+.lobby-card-title.join{color:var(--nb);}
+#lobby-host-hud{display:none;background:rgba(57,255,20,.04);border:1px solid var(--ng);
+  border-radius:4px;padding:16px 18px;margin-bottom:14px;}
+.hud-code-label{font-size:.6rem;color:var(--td);letter-spacing:2px;font-family:'Orbitron',sans-serif;margin-bottom:6px;}
+.hud-code{font-family:'Orbitron',sans-serif;font-size:2.1rem;font-weight:900;
+  color:var(--ng);text-shadow:var(--gG);letter-spacing:6px;margin-bottom:12px;}
+.hud-roster-label{font-size:.58rem;color:var(--td);letter-spacing:1.5px;
+  font-family:'Orbitron',sans-serif;margin-bottom:6px;}
+#lobby-roster-list{display:flex;flex-wrap:wrap;gap:6px;min-height:28px;margin-bottom:12px;}
+.roster-pill{background:rgba(0,242,255,.08);border:1px solid var(--bd-b);border-radius:3px;
+  padding:3px 10px;font-size:.65rem;color:var(--nb);font-family:'Share Tech Mono',monospace;}
+.hud-btns{display:flex;gap:8px;}
+.lobby-join-row{display:flex;gap:8px;}
+.lobby-join-input{flex:1;padding:10px 12px;font-family:'Orbitron',sans-serif;
+  font-size:.8rem;letter-spacing:3px;text-transform:uppercase;text-align:center;
+  background:var(--bg2);border:1px solid var(--bd-b);border-radius:4px;color:var(--nb);}
+.lobby-join-input::placeholder{color:rgba(0,242,255,.25);letter-spacing:1px;font-size:.68rem;}
+.lobby-join-input:focus{border-color:var(--nb);outline:none;}
+.lobby-join-input.err{border-color:var(--nr);animation:gw-shake .28s ease;}
+.lobby-err{font-size:.65rem;color:var(--nr);min-height:18px;font-family:'Orbitron',sans-serif;
+  letter-spacing:1px;margin-top:6px;}
 
 /* ═══ MODULE 2 — LAND REGISTRY PANEL ═══ */
 .lr-zone{background:var(--bg2);border:1px solid var(--bd-b);border-radius:4px;padding:12px;margin-bottom:10px;}
@@ -1852,6 +1882,8 @@ input[type=range]::-webkit-slider-thumb{
       <button class="nb-btn" onclick="showP(this,'res')"><span class="ic">🧪</span>Research</button>
       <div class="ns-label">CONFLICT & DIPLOMACY</div>
       <button class="nb-btn" onclick="showP(this,'nations')"><span class="ic">🌍</span>Nations</button>
+      <div class="ns-label">LAND & AGRICULTURE</div>
+      <button class="nb-btn" onclick="showP(this,'land');renderLandRegistry()"><span class="ic">🏗</span>Land Registry</button>
     </div>
 
     <!-- Content -->
@@ -2342,6 +2374,14 @@ input[type=range]::-webkit-slider-thumb{
         <div class="card"><div class="ct">🧪 Research Programs</div><div class="g2" id="res-grid"></div></div>
       </div>
 
+      <!-- LAND REGISTRY -->
+      <div class="panel" id="pn-land">
+        <div style="font-family:'Orbitron',sans-serif;font-size:.76rem;color:var(--nb);margin-bottom:14px;">
+          🏗 LAND REGISTRY — DUAL-ZONE ALLOCATION
+        </div>
+        <div id="land-registry-panel"><div class="td" style="font-size:.68rem;">Loading…</div></div>
+      </div>
+
       <!-- NATIONS — CONFLICT & DIPLOMACY -->
       <div class="panel" id="pn-nations">
         <div style="font-family:'Orbitron',sans-serif;font-size:.76rem;color:var(--nb);margin-bottom:14px;">🌍 CONFLICT & DIPLOMACY — KNOWN NATIONS</div>
@@ -2734,14 +2774,83 @@ input[type=range]::-webkit-slider-thumb{
   </div>
 </div>
 
-<!-- ══ MODULE 1: ROOM GATE ══ -->
+<!-- ══ MODULE 1: LOBBY SCREEN ══ -->
 <div id="room-gate">
-  <div class="rg-icon">🔒</div>
-  <div class="rg-title">INVALID ACCESS: INVITATION LINK REQUIRED</div>
-  <div class="rg-msg">
-    This simulation is session-restricted.<br>
-    You must access this terminal via an authorised Host invite link.<br>
-    Contact your Game Master to obtain a valid room token.
+  <div class="lobby-wrap">
+
+    <!-- Header -->
+    <div style="text-align:center;padding-top:16px;">
+      <div class="lobby-title">⚔ BATTLE OF SUPREMACY</div>
+      <div class="lobby-sub">VERSION 2.0 &nbsp;◈&nbsp; MULTIPLAYER COMMAND</div>
+      <div class="lobby-divider"></div>
+    </div>
+
+    <!-- ── SECTION 1: HOST NEW GAME ── -->
+    <div class="lobby-card">
+      <div class="lobby-card-bar host"></div>
+      <div class="lobby-card-body">
+        <div class="lobby-card-title host">🎮 HOST NEW GAME</div>
+
+        <!-- Pre-creation fields -->
+        <div id="lobby-host-form">
+          <div class="gw-field">
+            <label>HOST ADMIN KEY</label>
+            <input type="password" id="lh-admin-key" placeholder="Enter admin key..." maxlength="32"
+              oninput="document.getElementById('lh-err').textContent=''"
+              onkeydown="if(event.key==='Enter')lobbyHostCreate()">
+          </div>
+          <div class="lobby-err" id="lh-err"></div>
+          <button class="gw-btn-player" id="lh-create-btn" onclick="lobbyHostCreate()">
+            <span id="lh-create-txt">🚀 CREATE ROOM &amp; GO LIVE</span>
+          </button>
+        </div>
+
+        <!-- Post-creation HUD (hidden until room is created) -->
+        <div id="lobby-host-hud">
+          <div class="hud-code-label">YOUR ROOM CODE</div>
+          <div class="hud-code" id="hud-room-code">——</div>
+          <div class="hud-roster-label">CONNECTED NATIONS (<span id="hud-nation-count">0</span>)</div>
+          <div id="lobby-roster-list"></div>
+          <div class="hud-btns">
+            <button class="btn bbg" style="flex:1;font-size:.65rem;" onclick="lobbyCopyLink()">
+              🔗 COPY INVITE LINK
+            </button>
+            <button class="btn bbg" style="flex:1;font-size:.65rem;border-color:var(--ng2);color:var(--ng2);"
+              onclick="lobbyStartSimulation()">
+              ▶ START SIMULATION
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ── SECTION 2: JOIN EXISTING BATTLE ── -->
+    <div class="lobby-card">
+      <div class="lobby-card-bar join"></div>
+      <div class="lobby-card-body">
+        <div class="lobby-card-title join">↗ JOIN EXISTING BATTLE</div>
+        <div style="font-size:.65rem;color:var(--td);margin-bottom:12px;">
+          Enter the 6-character room code from your host's invite link.
+        </div>
+        <div class="lobby-join-row">
+          <input type="text" id="lj-code" class="lobby-join-input"
+            placeholder="BOS-49X" maxlength="7"
+            oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9\-]/g,'');document.getElementById('lj-err').textContent=''"
+            onkeydown="if(event.key==='Enter')lobbyJoinRoom()">
+          <button class="btn bbg" style="padding:10px 18px;font-size:.7rem;flex-shrink:0;"
+            id="lj-btn" onclick="lobbyJoinRoom()">
+            <span id="lj-btn-txt">ENTER ROOM</span>
+          </button>
+        </div>
+        <div class="lobby-err" id="lj-err"></div>
+      </div>
+    </div>
+
+    <!-- Small print -->
+    <div style="text-align:center;font-size:.6rem;color:var(--td);padding-bottom:8px;">
+      Need an invite? Ask your host for the room code or the full invite URL.
+    </div>
   </div>
 </div>
 
@@ -3078,13 +3187,19 @@ function attachNationsListener() {
   if (_nationsUnsubscribe) { _nationsUnsubscribe(); _nationsUnsubscribe = null; }
   if (!_db) return;
 
-  const colRef = _collection(_db, 'nations');
+  // ── BUG FIX: use room-scoped path to match where nations are written ──
+  // foundNation writes to /rooms/{roomId}/nations/{nKey}
+  // This listener must read from the same path — NOT the bare /nations collection.
+  const colRef = MP.roomId
+    ? _collection(_db, 'rooms', MP.roomId, 'nations')
+    : _collection(_db, 'nations');   // offline/single-player fallback only
+
   _nationsUnsubscribe = _onSnapshot(
     colRef,
     (snap) => {
       LIVE_NATIONS = [];
       snap.forEach(docSnap => {
-        // Exclude the current player's own nation
+        // Filter rule: exclude own nation doc — doc.id !== currentNationId
         if (docSnap.id === MP.nationKey) return;
         const d = docSnap.data();
         LIVE_NATIONS.push({
@@ -3099,15 +3214,16 @@ function attachNationsListener() {
           edu:             d.eduLevel           ?? 1,
           food:            d.foodStock          ?? 0,
           firewallDefense: d.firewallDefense    ?? 0,
-          inCivilWar:      d.isDrought          ?? false, // proxy: host can set per-nation flags
-          allianceWith:    null,   // alliance state is local (WAR object)
+          inCivilWar:      d.underCyberWar      ?? false,
+          allianceWith:    null,
           sanctioned:      d.sanctioned         ?? false,
           sanctionExpiry:  d.sanctionExpiry     ?? 0,
-          isHuman:         true,   // all Firestore entries are real players
+          isHuman:         true,
         });
       });
 
-      // Re-render nations panel if it is currently visible
+      // Re-render nations panel if visible — pass noSync=true so
+      // the UI refresh does NOT trigger a Firestore write (prevents loop)
       const np = document.getElementById('pn-nations');
       if (np && np.classList.contains('act')) renderNationsPanel();
     },
@@ -3157,7 +3273,7 @@ let _unsubscribe  = null;   // onSnapshot unsubscribe handle
 // v10 modular function handles — assigned once SDK loads
 let _collection, _doc, _getDoc, _setDoc, _updateDoc,
     _runTransaction, _onSnapshot, _arrayUnion, _increment,
-    _serverTimestamp, _query, _orderBy, _limit, _getDocs, _addDoc,
+    _serverTimestamp, _query, _orderBy, _limit, _getDocs, _addDoc, _deleteDoc,
     _initializeApp;
 
 // ── Multiplayer session state ────────────────────────────────
@@ -3222,7 +3338,8 @@ function loadFirebase() {
     _orderBy         = storeMod.orderBy;
     _limit           = storeMod.limit;
     _getDocs         = storeMod.getDocs;
-    _addDoc          = storeMod.addDoc;            // newsfeed + IPO event writes
+    _addDoc          = storeMod.addDoc;
+    _deleteDoc       = storeMod.deleteDoc;          // cyber duel cleanup
 
     // ── Init Firebase App (guard against duplicate init) ───
     _app = appMod.getApps().length
@@ -3412,13 +3529,14 @@ function attachRealtimeListener() {
       mergeGFromDoc(data);
 
       // ── Project Silicon: check for incoming hack alert ──
-      // Fires whenever a teammate or rival pushes _hackAlert into the document
       if (data._hackAlert && typeof _checkIncomingHackAlert === 'function') {
         _checkIncomingHackAlert(data);
       }
 
       if (APP_MODE === 'player') {
-        updatePlayerUI();
+        // Pass true = "snapshot-triggered, do NOT push back to Firestore"
+        // This breaks the write → onSnapshot → write infinite loop.
+        updatePlayerUI(true);
         const hdr = document.getElementById('p-header');
         if (hdr) {
           hdr.style.boxShadow = '0 0 18px rgba(57,255,20,.55)';
@@ -3711,6 +3829,84 @@ function setBtnLoading(btnId, txtId, loading, defaultTxt) {
 }
 
 // ── Shared transition into player shell ──────────────────
+// ── SESSION KEY (separate from LS_KEY which stores game state) ──
+const SESSION_KEY = 'bos_session';
+
+// Save the minimum credentials needed to re-enter after a refresh
+function _saveSession() {
+  try {
+    localStorage.setItem(SESSION_KEY, JSON.stringify({
+      roomId:       MP.roomId,
+      nationKey:    MP.nationKey,
+      commanderName: MP.commanderName,
+      nationName:   G.nationName,
+      isLeader:     MP.isLeader,
+      savedAt:      Date.now(),
+    }));
+  } catch (e) { console.warn('[BOS] Session save failed:', e.message); }
+}
+
+// Attempt to restore a previous session — returns true if restored
+async function _restoreSession() {
+  let saved;
+  try {
+    const raw = localStorage.getItem(SESSION_KEY);
+    if (!raw) return false;
+    saved = JSON.parse(raw);
+  } catch { return false; }
+
+  // Expire sessions older than 8 hours
+  if (!saved?.roomId || Date.now() - saved.savedAt > 8 * 60 * 60 * 1000) {
+    localStorage.removeItem(SESSION_KEY);
+    return false;
+  }
+
+  // Firebase must load before we can re-attach
+  try { await loadFirebase(); } catch { return false; }
+
+  // Seed MP state from saved credentials
+  MP.roomId        = saved.roomId;
+  MP.nationKey     = saved.nationKey;
+  MP.commanderName = saved.commanderName;
+  MP.isLeader      = saved.isLeader;
+  MP.enabled       = true;
+
+  // Seed G fields so the player shell renders correctly
+  G.nationName    = saved.nationName    || saved.nationKey;
+  G.commanderName = saved.commanderName || '';
+
+  // Re-scope all Firestore document refs to the saved room
+  reinitialiseScopedRefs();
+
+  // Fetch latest nation state from Firestore so the shell isn't stale
+  try {
+    const snap = await _getDoc(_nationDocRef);
+    if (snap.exists()) mergeGFromDoc(snap.data());
+  } catch (e) { console.warn('[BOS] Session restore fetch:', e.message); }
+
+  // Re-attach real-time listener
+  attachRealtimeListener();
+
+  return true;
+}
+
+// ── Logout / Leave Room ──────────────────────────────────────
+// Clears both session and game-state caches then reloads to the gateway.
+function leaveRoom() {
+  if (!confirm('Leave this nation and return to the gateway? Your progress is saved in Firestore.')) return;
+  localStorage.removeItem(SESSION_KEY);
+  localStorage.removeItem(LS_KEY);
+  // Detach listeners to prevent ghost writes after logout
+  if (_unsubscribe)         { _unsubscribe(); _unsubscribe = null; }
+  if (_nationsUnsubscribe)  { _nationsUnsubscribe(); _nationsUnsubscribe = null; }
+  if (_mktUnsubscribe)      { _mktUnsubscribe(); _mktUnsubscribe = null; }
+  sessionState.unsubscribers.forEach(u => { try { u(); } catch (_) {} });
+  sessionState.unsubscribers = [];
+  stopTimer();
+  // Reload to the same URL so enforceRoomGate re-runs cleanly
+  window.location.href = window.location.origin + window.location.pathname + '?room=' + MP.roomId;
+}
+
 function enterPlayerShell() {
   document.getElementById('gateway').style.display = 'none';
   document.getElementById('player-shell').classList.add('on');
@@ -3721,8 +3917,35 @@ function enterPlayerShell() {
   if (MP.enabled && MP.nationKey) {
     attachGameSyncEngine(MP.nationKey, MP.isLeader);
   }
-  // Start live rival nations listener — fires immediately and on every join/leave
+  // Start live rival nations listener
   attachNationsListener();
+
+  // ── Inject logout button into player header (once) ──────
+  if (!document.getElementById('logout-btn')) {
+    const chip = document.getElementById('mp-sync-chip');
+    if (chip?.parentNode) {
+      const btn = document.createElement('button');
+      btn.id        = 'logout-btn';
+      btn.textContent = '⏏ LEAVE ROOM';
+      btn.onclick   = leaveRoom;
+      btn.style.cssText = [
+        'font-family:Orbitron,sans-serif',
+        'font-size:.58rem',
+        'letter-spacing:1.5px',
+        'padding:3px 10px',
+        'background:rgba(255,49,49,.08)',
+        'border:1px solid var(--nr)',
+        'color:var(--nr)',
+        'border-radius:3px',
+        'cursor:pointer',
+        'margin-left:8px',
+        'transition:all .2s',
+      ].join(';');
+      btn.onmouseenter = () => { btn.style.background='rgba(255,49,49,.2)'; };
+      btn.onmouseleave = () => { btn.style.background='rgba(255,49,49,.08)'; };
+      chip.parentNode.insertBefore(btn, chip.nextSibling);
+    }
+  }
 }
 
 // ── Initial G document structure for Firestore ───────────
@@ -3792,6 +4015,9 @@ async function foundNation() {
 
     // Global shared market document — always /market/marketState (2 segments, never room-scoped)
     _marketStateRef = _doc(_db, 'market', 'marketState');
+
+    // ── Persist session so a browser refresh restores this seat ──
+    _saveSession();
 
     attachRealtimeListener();
     setGwSync(true, 'NATION FOUNDED — ENTERING COMMAND CENTER…');
@@ -3864,6 +4090,9 @@ async function joinNation() {
 
     // Players listen to the shared market document (Host writes it each cycle)
     attachMarketListener(nKey);
+
+    // ── Persist session so a browser refresh restores this seat ──
+    _saveSession();
 
     // Register this commander in the members list
     // v10 modular: _updateDoc(ref, data) + _arrayUnion() instead of FieldValue.arrayUnion()
@@ -3998,25 +4227,37 @@ function attachGameSyncEngine(nationId, isHostClient = false) {
   _newsfeedCol    = _collection(_db, 'newsfeed');
 
   // ── 2. Global Session State: cycle clock + crisis flags ──
+  // PURELY REACTIVE — this callback NEVER writes back to globalState.
+  // Writing here would re-trigger onSnapshot and cause the cascade loop.
   const globalUnsub = _onSnapshot(
     _globalStateRef,
     (snap) => {
       if (!snap.exists()) return;
       const data = snap.data();
-      sessionState.currentCycle   = data.currentCycle   || 1;
-      sessionState.activeDrought  = data.isDroughtActive || false;
-      G.cycle      = sessionState.currentCycle;
-      G.isDrought  = sessionState.activeDrought;
+      const incomingCycle = data.currentCycle || 1;
 
-      // Sync drought visual state on player UI
+      // Detect a new cycle tick pushed by the host
+      const isNewCycle = incomingCycle > (sessionState.currentCycle || 0);
+
+      sessionState.currentCycle  = incomingCycle;
+      sessionState.activeDrought = data.isDroughtActive || false;
+      G.cycle     = incomingCycle;
+      G.isDrought = sessionState.activeDrought;
+
+      // ── NON-HOST CLIENTS: run nation update once per cycle tick ──
+      // Host runs runFiscalCycle() on its own timer — clients react here.
+      // Guard: only fire if this is a genuine new cycle AND we are not the host.
+      if (isNewCycle && !sessionState.isHost && APP_MODE === 'player' && MP.nationKey) {
+        processCycleForNation(MP.nationKey, incomingCycle);
+      }
+
+      // Update drought UI
       if (APP_MODE === 'player') {
         updateFarmPanel();
         renderFarmGrids();
-        // Drought crisis badge in header
         const dw = document.getElementById('drought-warn');
         if (dw) dw.style.display = sessionState.activeDrought ? 'block' : 'none';
       }
-      // Propagate to host UI
       if (APP_MODE === 'host') {
         const lbl = document.getElementById('drought-lbl');
         if (lbl) lbl.textContent = sessionState.activeDrought ? '🔴 ACTIVE — FARMS LOCKED' : 'INACTIVE';
@@ -4262,13 +4503,133 @@ function initGame() {
 const CIRC = 2 * Math.PI * 21; // 131.95
 let timerSec = 60;
 
+// ═══════════════════════════════════════════════════════════
+// CONSOLIDATED ATOMIC NATION CYCLE PROCESSOR  (Module 2)
+// ─────────────────────────────────────────────────────────
+// Called for non-host clients on every incoming cycle tick,
+// and by the host's own runFiscalCycle path.
+// One single updateDoc() — no multiple partial writes.
+// ═══════════════════════════════════════════════════════════
+async function processCycleForNation(nationId, cycleNumber) {
+  if (!_db || !MP.roomId || !nationId) return;
+
+  const nationRef = _doc(_db, 'rooms', MP.roomId, 'nations', nationId);
+
+  try {
+    await _runTransaction(_db, async txn => {
+      const snap = await txn.get(nationRef);
+      if (!snap.exists()) return;
+      const d = snap.data();
+
+      // ── Duplicate-execution guard ─────────────────────────
+      // If this cycle was already processed (e.g. two clients raced),
+      // abort silently — prevents double-crediting.
+      if ((d.lastProcessedCycle || 0) >= cycleNumber) return;
+
+      // ── Agricultural yield ────────────────────────────────
+      // Yield rates (T/Ha/cycle): wheat 3.5, corn 4.2, rice 5.0
+      const alloc    = d.cropAllocations || {};
+      const yieldTon =
+        (alloc.wheat || 0) * 3.5 +
+        (alloc.corn  || 0) * 4.2 +
+        (alloc.rice  || 0) * 5.0;
+
+      // ── Infrastructure upkeep ─────────────────────────────
+      // Per-cycle deductions: school $10k, hospital $15k, milbase $30k, runway $45k
+      const UPKEEP = { school:10_000, hospital:15_000, milbase:30_000, runway:45_000 };
+      const buildings = d.buildings || [];
+      const totalUpkeep = buildings.reduce((s, b) => s + (UPKEEP[b.type] || 0), 0);
+
+      // ── Base market income (edu-scaled) ───────────────────
+      const baseIncome  = (d.eduLevel || 1) * 2000;
+      const gdpDelta    = baseIncome - totalUpkeep;
+
+      // ── Single atomic write — all cycle effects in one call ──
+      txn.update(nationRef, {
+        gdp:                _increment(gdpDelta),
+        foodReservesTons:   _increment(yieldTon),
+        lastProcessedCycle: cycleNumber,
+        _updatedAt:         Date.now(),
+        _updatedBy:         'CYCLE_ENGINE',
+      });
+    });
+
+  } catch (e) {
+    // Transaction contention is expected under 40-60 clients; log and move on
+    console.warn(`[BOS] processCycleForNation #${cycleNumber}:`, e.message);
+  }
+}
+
+// ═══════════════════════════════════════════════════════════
+// HOST-ONLY 60-SECOND CYCLE AUTHORITY  (Module 1)
+// ─────────────────────────────────────────────────────────
+// Only the host tab runs this interval.  It writes ONE field
+// (currentCycle) to globalState — all clients react via
+// their onSnapshot.  No cycle logic runs inside onSnapshot.
+// ═══════════════════════════════════════════════════════════
+async function hostAdvanceCycleTick() {
+  // Hard guard — must be the authoritative host
+  if (!sessionState.isHost || !_db) return;
+  if (!_globalStateRef) _globalStateRef = _doc(_db, 'rooms', MP.roomId, 'session', 'globalState');
+
+  try {
+    await _runTransaction(_db, async txn => {
+      const snap = await txn.get(_globalStateRef);
+      const cur  = snap.exists() ? (snap.data().currentCycle || 0) : 0;
+
+      txn.set(_globalStateRef, {
+        currentCycle:    cur + 1,
+        isDroughtActive: G.isDrought || false,
+        cycleEndsAt:     Date.now() + 60_000,
+        _serverTs:       _serverTimestamp ? _serverTimestamp() : null,
+      }, { merge: true });
+    });
+
+    // Host also runs its own nation processing and market update
+    await processCycleForNation(MP.nationKey, G.cycle);
+    resolveCyclePriceUpdate();
+    pushMarketToFirestore();
+
+  } catch (e) {
+    console.error('[BOS] hostAdvanceCycleTick:', e.message);
+  }
+}
+
+// ── Stored handle so stopTimer() can cancel it ──────────────
+let _cycleIntervalId = null;
+
 function startTimer() {
+  // Clear any existing interval before starting a new one
+  if (_cycleIntervalId) { clearInterval(_cycleIntervalId); _cycleIntervalId = null; }
+
   timerSec = 60;
-  setInterval(() => {
+
+  _cycleIntervalId = setInterval(() => {
     timerSec--;
     updateTimerUI();
-    if (timerSec <= 0) { runFiscalCycle(); timerSec = 60; }
+
+    if (timerSec <= 0) {
+      timerSec = 60;
+
+      // ── HOST-AUTHORITY GUARD ─────────────────────────────
+      // ONLY the nation founder / session leader may trigger the fiscal cycle.
+      // Every other connected client receives the resulting state via
+      // their onSnapshot listener and MUST NOT self-tick.
+      // This is what prevents the 1-second cascading loop: every client's
+      // timer still counts down for the UI ring, but only one tab fires
+      // runFiscalCycle() and pushes state to Firestore.
+      if (MP.enabled && !MP.isLeader) return;
+
+      runFiscalCycle();
+    }
   }, 1000);
+}
+
+function stopTimer() {
+  if (_cycleIntervalId) {
+    clearInterval(_cycleIntervalId);
+    _cycleIntervalId = null;
+  }
 }
 
 function updateTimerUI() {
@@ -7588,15 +7949,650 @@ initGame = function() {
 
 // ── Refresh nations panel on every player UI update ──
 const _origUpdatePlayerUI = updatePlayerUI;
-updatePlayerUI = function() {
+// noSync=true when called FROM an onSnapshot callback — suppresses the
+// pushGToFirestore() that would otherwise re-trigger the listener
+// and cause the 1-second cascading cycle loop.
+updatePlayerUI = function(noSync = false) {
   _origUpdatePlayerUI();
   // Refresh nations panel if it's the active panel
   if (APP_MODE === 'player') {
     const np = document.getElementById('pn-nations');
     if (np && np.classList.contains('act')) renderNationsPanel();
   }
-  // Sync to Firestore whenever any game state changes
-  if (MP.enabled) pushGToFirestore();
+  // Only push to Firestore for genuine player-initiated actions,
+  // NEVER when we are responding to an incoming snapshot.
+  if (MP.enabled && !noSync) pushGToFirestore();
+};
+
+// ═══════════════════════════════════════════════════════════
+// MODULE 1 — ROOM TOKEN SCOPING & HOST INVITE SYSTEM
+// ═══════════════════════════════════════════════════════════
+
+function generateRoomToken() {
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  return Array.from({length:6}, () => chars[Math.floor(Math.random() * chars.length)]).join('');
+}
+
+// ── Read ?room= and ?role= from URL ─────────────────────────
+function getRoomFromUrl()  { return new URLSearchParams(window.location.search).get('room') || ''; }
+function getRoleFromUrl()  { return new URLSearchParams(window.location.search).get('role')  || ''; }
+
+// ── Room gate: decides which screen to show on load ──────────
+function enforceRoomGate() {
+  const roomId = getRoomFromUrl();
+  const role   = getRoleFromUrl();
+
+  if (roomId && role === 'host') {
+    // Host landed here via their own ?room=XXX&role=host URL
+    // — show the lobby HUD with their room code and roster
+    MP.roomId = roomId;
+    document.getElementById('room-gate').classList.add('show');
+    document.getElementById('gateway').style.display = 'none';
+    _showHostHud(roomId);
+    return;
+  }
+
+  if (roomId) {
+    // Player arrived via an invite link — show gateway (found/join nation)
+    MP.roomId = roomId;
+    return;  // gateway is already visible by default
+  }
+
+  // No room param — show the lobby screen
+  document.getElementById('room-gate').classList.add('show');
+  document.getElementById('gateway').style.display = 'none';
+}
+
+// ── SECTION 1: Host creates a room ──────────────────────────
+const ADMIN_KEY = 'admin123';   // change before deployment
+
+async function lobbyHostCreate() {
+  const key     = document.getElementById('lh-admin-key')?.value?.trim();
+  const errEl   = document.getElementById('lh-err');
+  const btnEl   = document.getElementById('lh-create-btn');
+  const btnTxt  = document.getElementById('lh-create-txt');
+
+  if (!key) { errEl.textContent = 'Enter the host admin key.'; return; }
+  if (key !== ADMIN_KEY) { errEl.textContent = 'INVALID ADMIN KEY — ACCESS DENIED'; return; }
+
+  btnEl.disabled = true;
+  btnTxt.textContent = '◌ INITIALISING ROOM…';
+  errEl.textContent  = '';
+
+  // Generate BOS-XXXXX format code
+  const chars  = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  const token  = 'BOS-' + Array.from({length:3}, () => chars[Math.floor(Math.random() * chars.length)]).join('');
+  MP.roomId    = token;
+
+  // Stamp URL so the host can bookmark / share immediately
+  history.replaceState(null, '', `?room=${token}&role=host`);
+
+  // Initialise globalState in Firestore
+  try {
+    await loadFirebase();
+    const gsRef = _doc(_db, 'rooms', token, 'session', 'globalState');
+    await _setDoc(gsRef, {
+      status:      'LOBBY',
+      cycle:       1,
+      isDroughtActive: false,
+      _createdAt:  Date.now(),
+      _serverTs:   _serverTimestamp ? _serverTimestamp() : null,
+    });
+    _showHostHud(token);
+  } catch (e) {
+    btnEl.disabled = false;
+    btnTxt.textContent = '🚀 CREATE ROOM & GO LIVE';
+    errEl.textContent  = 'Firebase error: ' + e.message;
+  }
+}
+
+// ── Show the post-creation HUD and start roster listener ────
+let _lobbyRosterUnsub = null;
+
+function _showHostHud(roomId) {
+  const form = document.getElementById('lobby-host-form');
+  const hud  = document.getElementById('lobby-host-hud');
+  const code = document.getElementById('hud-room-code');
+  if (form) form.style.display = 'none';
+  if (hud)  hud.style.display  = 'block';
+  if (code) code.textContent   = roomId;
+
+  // Live roster: listen to /rooms/{roomId}/nations
+  if (!_db) { loadFirebase().then(() => _attachLobbyRoster(roomId)).catch(console.warn); return; }
+  _attachLobbyRoster(roomId);
+}
+
+function _attachLobbyRoster(roomId) {
+  if (_lobbyRosterUnsub) { _lobbyRosterUnsub(); _lobbyRosterUnsub = null; }
+  const colRef = _collection(_db, 'rooms', roomId, 'nations');
+  _lobbyRosterUnsub = _onSnapshot(colRef, snap => {
+    const list    = document.getElementById('lobby-roster-list');
+    const counter = document.getElementById('hud-nation-count');
+    if (!list) return;
+    list.innerHTML = '';
+    snap.forEach(doc => {
+      const d    = doc.data();
+      const pill = document.createElement('div');
+      pill.className   = 'roster-pill';
+      pill.textContent = (d.nationName || doc.id) + (d.commanderName ? ` — ${d.commanderName}` : '');
+      list.appendChild(pill);
+    });
+    if (counter) counter.textContent = snap.size;
+  }, err => console.warn('[BOS] Lobby roster:', err.message));
+}
+
+// ── Copy invite link from the host HUD ──────────────────────
+function lobbyCopyLink() {
+  const url = `${window.location.origin}${window.location.pathname}?room=${MP.roomId}`;
+  navigator.clipboard.writeText(url)
+    .then(() => showToast('✓ Invite link copied!', 'suc'))
+    .catch(() => prompt('Copy this link:', url));
+}
+
+// ── Host starts the simulation from the lobby HUD ───────────
+function lobbyStartSimulation() {
+  if (_lobbyRosterUnsub) { _lobbyRosterUnsub(); _lobbyRosterUnsub = null; }
+  document.getElementById('room-gate').classList.remove('show');
+  document.getElementById('h-header') && (document.getElementById('host-shell').classList.add('on'));
+  // Redirect host to the host dashboard — gateway stays hidden
+  APP_MODE = 'host';
+  reinitialiseScopedRefs();
+  if (typeof renderTelemTable === 'function') renderTelemTable();
+  if (typeof startTimer === 'function') startTimer();
+  _saveSession();
+  showToast('Simulation started! Players are live.', 'suc');
+}
+
+// ── SECTION 2: Player joins via room code ───────────────────
+async function lobbyJoinRoom() {
+  const rawCode = (document.getElementById('lj-code')?.value || '').trim().toUpperCase();
+  const errEl   = document.getElementById('lj-err');
+  const btnEl   = document.getElementById('lj-btn');
+  const btnTxt  = document.getElementById('lj-btn-txt');
+
+  if (!rawCode) { errEl.textContent = 'Enter a room code.'; document.getElementById('lj-code').classList.add('err'); return; }
+
+  btnEl.disabled = true;
+  btnTxt.textContent = '◌ CHECKING…';
+  errEl.textContent  = '';
+
+  try {
+    await loadFirebase();
+    // Verify the room exists in Firestore
+    const gsRef = _doc(_db, 'rooms', rawCode, 'session', 'globalState');
+    const snap  = await _getDoc(gsRef);
+    if (!snap.exists()) {
+      errEl.textContent = 'ROOM NOT FOUND — Check the code and try again.';
+      document.getElementById('lj-code').classList.add('err');
+      btnEl.disabled = false;
+      btnTxt.textContent = 'ENTER ROOM';
+      return;
+    }
+
+    // Room found — redirect to the gateway with the room code
+    MP.roomId = rawCode;
+    document.getElementById('room-gate').classList.remove('show');
+    document.getElementById('gateway').style.display = '';
+    // Update URL so a refresh lands in the same room
+    history.replaceState(null, '', `?room=${rawCode}`);
+
+  } catch (e) {
+    errEl.textContent = 'Connection error: ' + e.message;
+    btnEl.disabled = false;
+    btnTxt.textContent = 'ENTER ROOM';
+  }
+}
+
+// ── copyInviteLink (unchanged — used from host shell header button) ──
+function copyInviteLink() {
+  const url = `${window.location.origin}${window.location.pathname}?room=${MP.roomId}`;
+  navigator.clipboard.writeText(url)
+    .then(() => { showToast('✓ Invite link copied!', 'suc'); if (typeof hlog==='function') hlog('Invite link copied.', 'ho'); })
+    .catch(() => prompt('Copy this invite link:', url));
+}
+
+// ── Re-scope all Firestore doc refs into /rooms/{roomId}/... ─
+function reinitialiseScopedRefs() {
+  if (!_db || !MP.roomId) return;
+  _nationDocRef   = _doc(_db, 'rooms', MP.roomId, 'nations',  MP.nationKey);
+  _globalStateRef = _doc(_db, 'rooms', MP.roomId, 'session',  'globalState');
+  _marketStateRef = _doc(_db, 'rooms', MP.roomId, 'market',   'marketState');
+  _newsfeedCol    = _collection(_db, 'rooms', MP.roomId, 'newsfeed');
+}
+
+// ── Boot ─────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', async () => {
+  // 1. Try session restore first (handles browser refresh mid-game)
+  const restored = await _restoreSession();
+  if (restored) {
+    enterPlayerShell();
+    return;
+  }
+  // 2. No saved session — run the room gate / lobby logic
+  enforceRoomGate();
+});
+
+// ═══════════════════════════════════════════════════════════
+// MODULE 2 — DUAL-ZONE LAND REGISTRY & AGRICULTURAL ROTATION
+// ═══════════════════════════════════════════════════════════
+
+const BUILDING_DEFS = [
+  { id:'school',   name:'School',       ha:50,  cost:250_000,   upkeep:10_000, icon:'🏫' },
+  { id:'hospital', name:'Hospital',     ha:60,  cost:400_000,   upkeep:15_000, icon:'🏥' },
+  { id:'milbase',  name:'Military Base',ha:100, cost:800_000,   upkeep:30_000, icon:'⚔'  },
+  { id:'runway',   name:'Jet Runway',   ha:120, cost:1_200_000, upkeep:45_000, icon:'✈'  },
+];
+
+const CROP_YIELDS = { wheat:4, corn:11, rice:6, soy:3 }; // T/Ha/cycle
+
+function buildStructure(defId) {
+  const def = BUILDING_DEFS.find(d => d.id === defId);
+  if (!def) return;
+  const used = G.buildings.reduce((s,b) => s + b.ha, 0);
+  if (def.ha > 5000 - used)  { showToast(`Need ${def.ha} Ha — only ${5000-used} Ha free.`, 'dng'); return; }
+  if (G.gdp < def.cost)      { showToast(`Need $${f(def.cost)}.`, 'dng'); return; }
+  G.gdp -= def.cost;
+  G.infraZoneHa += def.ha;
+  G.buildings.push({ id:`${def.id}_${Date.now()}`, type:def.id, ha:def.ha, cost:def.cost, builtCycle:G.cycle });
+  plog(`🏗 ${def.icon} ${def.name} built (${def.ha} Ha). Cost: $${f(def.cost)}`, 'suc');
+  showToast(`${def.icon} ${def.name} constructed.`, 'suc');
+  renderLandRegistry(); updatePlayerUI();
+}
+
+function demolishBuilding(buildId) {
+  const idx = G.buildings.findIndex(b => b.id === buildId);
+  if (idx === -1) return;
+  const b   = G.buildings[idx];
+  const fee = Math.floor(b.cost * 0.25);
+  if (G.gdp < fee) { showToast(`Demolition fee $${f(fee)} — insufficient funds.`, 'dng'); return; }
+  G.gdp -= fee; G.infraZoneHa -= b.ha; G.buildings.splice(idx, 1);
+  const def = BUILDING_DEFS.find(d => d.id === b.type);
+  plog(`🔨 ${def?.name||b.type} demolished. Fee: $${f(fee)}`, 'wrn');
+  renderLandRegistry(); updatePlayerUI();
+}
+
+function saveCropAllocations() {
+  if (G.cycle < G.cropLockedUntilCycle) { showToast(`Locked until Cycle ${G.cropLockedUntilCycle}.`, 'dng'); return; }
+  const crops = ['wheat','corn','rice','soy'];
+  let total = 0;
+  const alloc = {};
+  crops.forEach(c => { const ha = parseInt(document.getElementById(`crop-ha-${c}`)?.value||0,10); alloc[c]=ha; total+=ha; });
+  if (total > 5000) { showToast(`Total ${total} Ha exceeds 5,000 Ha limit.`, 'dng'); return; }
+  G.cropAllocations = alloc; G.cropLockedUntilCycle = G.cycle + 3;
+  plog(`🌾 Crop allocation saved. Locked until Cycle ${G.cropLockedUntilCycle}.`, 'suc');
+  showToast('Crop allocation locked for 3 cycles.', 'suc');
+  renderLandRegistry(); updatePlayerUI();
+}
+
+function runLandRegistryCycle() {
+  const upkeep = G.buildings.reduce((s,b) => s + (BUILDING_DEFS.find(d=>d.id===b.type)?.upkeep||0), 0);
+  if (upkeep > 0) { G.gdp = Math.max(0, G.gdp-upkeep); plog(`🏗 Upkeep: −$${f(upkeep)}`, 'inf'); }
+  let yield_ = 0;
+  Object.entries(G.cropAllocations).forEach(([c,ha]) => { yield_ += (CROP_YIELDS[c]||0) * ha; });
+  if (yield_ > 0) { G.foodReservesTons += yield_; plog(`🌾 Yield: +${f(yield_)} T → Reserves: ${f(G.foodReservesTons)} T`, 'suc'); }
+}
+
+function renderLandRegistry() {
+  const el = document.getElementById('land-registry-panel');
+  if (!el) return;
+  const used  = G.buildings.reduce((s,b)=>s+b.ha,0);
+  const cropT = Object.values(G.cropAllocations).reduce((s,v)=>s+v,0);
+  const locked = G.cycle < G.cropLockedUntilCycle;
+  el.innerHTML = `
+    <div class="g3 mb8">
+      <div class="met"><div class="ml">Infra Used</div><div class="mv gld">${f(used)}/5,000 Ha</div></div>
+      <div class="met"><div class="ml">Infra Free</div><div class="mv grn">${f(5000-used)} Ha</div></div>
+      <div class="met"><div class="ml">Food Reserves</div><div class="mv grn">${f(G.foodReservesTons)} T</div></div>
+    </div>
+    <div class="lr-zone">
+      <div class="lr-zone-title infra">🏗 INFRASTRUCTURE ZONE — MAX 5,000 Ha</div>
+      <div class="g2 mb8">${BUILDING_DEFS.map(d=>`
+        <div class="card" style="margin-bottom:0;padding:10px;">
+          <div style="font-family:'Orbitron',sans-serif;font-size:.65rem;color:var(--ng2);">${d.icon} ${d.name}</div>
+          <div style="font-size:.6rem;color:var(--td);margin:4px 0;">${d.ha} Ha · $${f(d.cost)} · $${f(d.upkeep)}/cycle</div>
+          <button class="btn bbg" style="width:100%;font-size:.62rem;margin-top:6px;" onclick="buildStructure('${d.id}')">BUILD</button>
+        </div>`).join('')}</div>
+      ${G.buildings.length===0 ? '<div class="td" style="font-size:.63rem;">No buildings yet.</div>' :
+        G.buildings.map(b=>{const d=BUILDING_DEFS.find(x=>x.id===b.type);return `
+          <div class="bld-card">
+            <div class="bld-info">
+              <div class="bld-name">${d?.icon||'🏗'} ${d?.name||b.type}</div>
+              <div class="bld-meta">${b.ha} Ha · Cycle ${b.builtCycle}</div>
+            </div>
+            <button class="btn bbr" style="font-size:.58rem;padding:4px 9px;" onclick="demolishBuilding('${b.id}')">DEMOLISH</button>
+          </div>`;}).join('')}
+    </div>
+    <div class="lr-zone">
+      <div class="lr-zone-title agri">🌾 AGRICULTURAL ZONE — MAX 5,000 Ha
+        ${locked?`<span class="crop-locked-badge" style="margin-left:8px;">🔒 CYCLE ${G.cropLockedUntilCycle}</span>`:''}
+      </div>
+      ${['wheat','corn','rice','soy'].map(c=>`
+        <div class="crop-row">
+          <label>${c[0].toUpperCase()+c.slice(1)}</label>
+          <input type="range" id="crop-ha-${c}" min="0" max="5000" step="50" value="${G.cropAllocations[c]||0}"
+            oninput="document.getElementById('crop-lbl-${c}').textContent=this.value+' Ha'" ${locked?'disabled':''}>
+          <span class="crop-ha" id="crop-lbl-${c}">${G.cropAllocations[c]||0} Ha</span>
+        </div>`).join('')}
+      <div class="fr-row" style="margin-top:8px;">
+        <div class="td" style="font-size:.62rem;">Free: <span style="color:var(--ng);">${f(5000-cropT)} Ha</span></div>
+        <button class="btn bbg" style="font-size:.63rem;" onclick="saveCropAllocations()" ${locked?'disabled':''}>
+          ${locked?'🔒 LOCKED':'💾 SAVE'}
+        </button>
+      </div>
+    </div>`;
+}
+
+// Wire Module 2 into fiscal cycle
+const _origRunCycleM2 = runFiscalCycle;
+runFiscalCycle = function() { _origRunCycleM2(); runLandRegistryCycle(); };
+
+// ═══════════════════════════════════════════════════════════
+// MODULE 3 — REAL-TIME CYBER DUEL ENGINE
+// ═══════════════════════════════════════════════════════════
+
+const DUEL = {
+  duelId:null, role:null, duelDocRef:null, unsubDuel:null,
+  timerVal:90, timerIv:null, scrambleIv:null,
+  seqTarget:[], seqInput:[], seqProgress:0,
+};
+
+async function initiateCyberDuel(targetId, targetName, targetGdp) {
+  if (!MP.enabled||!_db) {
+    G.gdp -= 50000; const stolen=Math.floor(targetGdp*0.18); G.gdp+=stolen;
+    plog(`💀 CYBER SIPHON (offline): +$${f(stolen)} from ${targetName}`,'suc');
+    G.cyberAttackCooldownEnd=Date.now()+180_000; _startCyberCooldownUI(180); updatePlayerUI(); return;
+  }
+  if (G.underCyberWar)           { showToast('Already in a cyber duel.','dng'); return; }
+  if (LIVE_NATIONS.find(n=>n.id===targetId)?.underCyberWar)
+                                  { showToast('Target busy in cyber combat.','dng'); return; }
+  const duelId  = `duel_${MP.nationKey}_${targetId}_${Date.now()}`;
+  const duelRef = _doc(_db,'rooms',MP.roomId,'cyberDuels',duelId);
+  const selfRef = _doc(_db,'rooms',MP.roomId,'nations',MP.nationKey);
+  const tgtRef  = _doc(_db,'rooms',MP.roomId,'nations',targetId);
+  try {
+    await _runTransaction(_db, async txn => {
+      const [ss,ts] = await Promise.all([txn.get(selfRef),txn.get(tgtRef)]);
+      if (ss.data()?.underCyberWar||ts.data()?.underCyberWar) throw new Error('NATION IN DUEL');
+      txn.set(duelRef,{attacker:MP.nationKey,attackerName:G.nationName,
+        defender:targetId,defenderName:targetName,status:'ACTIVE',
+        p1Progress:0,p2Progress:0,defenderClaimed:null,_createdAt:Date.now()});
+      txn.update(selfRef,{underCyberWar:true,activeDuelId:duelId});
+      txn.update(tgtRef,{underCyberWar:true,activeDuelId:duelId,
+        _hackAlert:`CYBER ATTACK FROM ${G.nationName}`,_hackAlertTs:Date.now()});
+    });
+    G.underCyberWar=true; G.activeDuelId=duelId;
+    Object.assign(DUEL,{duelId,role:'attacker',duelDocRef:duelRef});
+    _launchDuelUI('attacker',duelRef);
+    plog(`💀 Cyber duel initiated against ${targetName}.`,'dng');
+  } catch(e) { showToast('Duel failed: '+e.message,'dng'); }
+}
+
+async function engageCounterMeasures() {
+  if (!DUEL.duelDocRef) return;
+  try { await _updateDoc(DUEL.duelDocRef,{defenderClaimed:MP.commanderName}); } catch(e) {}
+  document.getElementById('cyber-panic-overlay').classList.remove('open');
+  DUEL.role='defender'; _launchDuelUI('defender',DUEL.duelDocRef);
+}
+
+function _launchDuelUI(role,duelRef) {
+  document.getElementById('cyber-duel-overlay').classList.add('open');
+  const lbl=document.getElementById('cd-role-label');
+  if (lbl) lbl.textContent = role==='attacker'?'⚔ CYBER DUEL — ATTACKER':'🛡 CYBER DUEL — DEFENDER';
+  DUEL.timerVal=90; DUEL.seqProgress=0; _cdNewSequence(); _cdBuildGrid();
+  const te=document.getElementById('cd-timer');
+  DUEL.timerIv=setInterval(()=>{
+    DUEL.timerVal--;
+    if(te){te.textContent=DUEL.timerVal;te.style.color=DUEL.timerVal<15?'#fff':'var(--nr)';}
+    if(DUEL.timerVal<=0){clearInterval(DUEL.timerIv);_resolveDuel(false);}
+  },1000);
+  DUEL.unsubDuel=_onSnapshot(duelRef,snap=>{
+    // Document deleted (deleteDoc after resolution) — dismiss all UI and free memory
+    if(!snap.exists()){
+      document.getElementById('cyber-duel-overlay')?.classList.remove('open');
+      document.getElementById('cyber-panic-overlay')?.classList.remove('open');
+      if(DUEL.unsubDuel){DUEL.unsubDuel();DUEL.unsubDuel=null;}
+      _closeDuel();
+      return;
+    }
+    const d=snap.data();
+    const ap=d.p1Progress||0, dp=d.p2Progress||0;
+    const ab=document.getElementById('cd-atk-bar'),db=document.getElementById('cd-def-bar');
+    if(ab)ab.style.width=ap+'%'; if(db)db.style.width=dp+'%';
+    if(document.getElementById('cd-atk-pct'))document.getElementById('cd-atk-pct').textContent=ap+'%';
+    if(document.getElementById('cd-def-pct'))document.getElementById('cd-def-pct').textContent=dp+'%';
+    if(ap>=100&&DUEL.role!=='attacker'){clearInterval(DUEL.timerIv);_resolveDuel(false);}
+    if(dp>=100&&DUEL.role!=='defender'){clearInterval(DUEL.timerIv);_resolveDuel(false);}
+  });
+}
+
+function _cdNewSequence() {
+  DUEL.seqTarget=Array.from({length:4},()=>'0x'+Math.floor(Math.random()*256).toString(16).toUpperCase().padStart(2,'0'));
+  DUEL.seqInput=[];
+  const row=document.getElementById('cd-seq-row');
+  if(row) row.innerHTML=DUEL.seqTarget.map((h,i)=>`<div class="cd-hex-target" id="cd-tgt-${i}">${h}</div>`).join('');
+}
+
+function _cdBuildGrid() {
+  const grid=document.getElementById('cd-grid');
+  if(!grid) return;
+  const pool=Array.from({length:16},()=>'0x'+Math.floor(Math.random()*256).toString(16).toUpperCase().padStart(2,'0'));
+  grid.innerHTML='';
+  pool.forEach((h,i)=>{
+    const c=document.createElement('div');
+    c.className='cd-cell'; c.id=`cd-cell-${i}`; c.textContent=h; c.dataset.hex=h;
+    c.onclick=()=>_cdCellClick(c); grid.appendChild(c);
+  });
+  if(DUEL.scrambleIv) clearInterval(DUEL.scrambleIv);
+  DUEL.scrambleIv=setInterval(()=>{
+    document.querySelectorAll('.cd-cell:not(.active)').forEach(c=>{
+      const h='0x'+Math.floor(Math.random()*256).toString(16).toUpperCase().padStart(2,'0');
+      c.textContent=h; c.dataset.hex=h;
+    });
+  },1500);
+}
+
+function _cdCellClick(cell) {
+  const hex=cell.dataset.hex, exp=DUEL.seqTarget[DUEL.seqInput.length];
+  if(hex===exp){
+    cell.classList.add('active');
+    const t=document.getElementById(`cd-tgt-${DUEL.seqInput.length}`);
+    if(t) t.classList.add('matched');
+    DUEL.seqInput.push(hex);
+    if(DUEL.seqInput.length===4){
+      DUEL.seqProgress=Math.min(100,DUEL.seqProgress+25);
+      _cdPushProgress(DUEL.seqProgress);
+      const msg=document.getElementById('cd-status-msg');
+      if(msg){msg.textContent=`✓ ${DUEL.seqProgress/25}/4 CLEARED`;msg.style.color='var(--ng)';}
+      if(DUEL.seqProgress>=100){clearInterval(DUEL.timerIv);clearInterval(DUEL.scrambleIv);_resolveDuel(true);}
+      else setTimeout(()=>{_cdNewSequence();_cdBuildGrid();},600);
+    }
+  } else {
+    DUEL.seqInput=[];
+    DUEL.seqTarget.forEach((_,i)=>{const t=document.getElementById(`cd-tgt-${i}`);if(t)t.classList.remove('matched');});
+    document.querySelectorAll('.cd-cell.active').forEach(c=>c.classList.remove('active'));
+    const msg=document.getElementById('cd-status-msg');
+    if(msg){msg.textContent='✗ WRONG — RETRY';msg.style.color='var(--nr)';}
+  }
+}
+
+async function _cdPushProgress(pct) {
+  if(!DUEL.duelDocRef) return;
+  const field=DUEL.role==='attacker'?'p1Progress':'p2Progress';
+  try{await _updateDoc(DUEL.duelDocRef,{[field]:pct,_updatedAt:Date.now()});}catch(e){}
+}
+
+async function _resolveDuel(iWon) {
+  clearInterval(DUEL.timerIv); clearInterval(DUEL.scrambleIv);
+  if(DUEL.unsubDuel){DUEL.unsubDuel();DUEL.unsubDuel=null;}
+  document.getElementById('cyber-duel-overlay').classList.remove('open');
+
+  if(!DUEL.duelDocRef||!MP.enabled){
+    if(DUEL.role==='attacker'&&iWon){const s=Math.floor(G.gdp*0.18);G.gdp+=s;plog(`💀 CYBER WIN: +$${f(s)}`,'suc');}
+    else if(DUEL.role==='attacker'&&!iWon){G.gdp=Math.max(0,G.gdp-500_000);plog('🛡 CYBER LOSS: −$500K','dng');}
+    _closeDuel(); updatePlayerUI(); return;
+  }
+
+  try{
+    const dd=(await _getDoc(DUEL.duelDocRef)).data()||{};
+    const atkId=dd.attacker, defId=dd.defender;
+    await _runTransaction(_db, async txn=>{
+      const ar=_doc(_db,'rooms',MP.roomId,'nations',atkId);
+      const dr=_doc(_db,'rooms',MP.roomId,'nations',defId);
+      const [as_,ds_]=await Promise.all([txn.get(ar),txn.get(dr)]);
+      const ag=as_.data()?.gdp||0, dg=ds_.data()?.gdp||0;
+      const atkWon=(DUEL.role==='attacker'&&iWon)||(DUEL.role==='defender'&&!iWon);
+      if(atkWon){
+        const s=Math.floor(dg*0.18);
+        txn.update(ar,{gdp:ag+s,underCyberWar:false,activeDuelId:null});
+        txn.update(dr,{gdp:Math.max(0,dg-s),underCyberWar:false,activeDuelId:null});
+        if(DUEL.role==='attacker'){G.gdp+=s;plog(`💀 CYBER WIN: +$${f(s)}`,'suc');}
+        else{G.gdp=Math.max(0,G.gdp-s);plog(`🛡 CYBER DEFEAT: −$${f(s)}`,'dng');}
+      } else {
+        const b=500_000;
+        txn.update(ar,{gdp:Math.max(0,ag-b),underCyberWar:false,activeDuelId:null});
+        txn.update(dr,{gdp:dg+b,underCyberWar:false,activeDuelId:null});
+        if(DUEL.role==='attacker'){G.gdp=Math.max(0,G.gdp-b);plog('🛡 CYBER LOSS: −$500K','dng');}
+        else{G.gdp+=b;plog('🛡 CYBER WIN: +$500K!','suc');}
+      }
+      // Archive status then delete so all client listeners fire their removal callback
+      // and auto-dismiss the panic overlay — no manual cleanup needed on clients.
+      txn.update(DUEL.duelDocRef, { status:'CLOSED', _closedAt:Date.now() });
+    });
+
+    // Delete the duel document after the transaction commits.
+    // onSnapshot fires 'removed' event on all clients → they dismiss the panic banner
+    // and free the listener memory automatically.
+    if (_deleteDoc && DUEL.duelDocRef) {
+      _deleteDoc(DUEL.duelDocRef).catch(e => console.warn('[BOS] Duel deleteDoc:', e.message));
+    }
+
+  }catch(e){console.warn('[BOS] Duel settle:',e.message);}
+
+  _closeDuel(); updatePlayerUI();
+}
+
+function _closeDuel() {
+  G.underCyberWar=false; G.activeDuelId=null;
+  Object.assign(DUEL,{duelId:null,role:null,duelDocRef:null,seqProgress:0});
+}
+
+// Override _checkIncomingHackAlert to trigger panic overlay for cyber duel
+const _origHackAlert = typeof _checkIncomingHackAlert==='function' ? _checkIncomingHackAlert : null;
+_checkIncomingHackAlert = function(data) {
+  if(_origHackAlert) _origHackAlert(data);
+  if(data.underCyberWar && data.activeDuelId && !G.underCyberWar) {
+    G.underCyberWar=true; G.activeDuelId=data.activeDuelId;
+    Object.assign(DUEL,{duelId:data.activeDuelId,role:'defender',
+      duelDocRef:_doc(_db,'rooms',MP.roomId,'cyberDuels',data.activeDuelId)});
+    document.getElementById('cyber-panic-overlay').classList.add('open');
+    showToast('⚠ CYBER ATTACK INCOMING!','dng');
+  }
+};
+
+// ═══════════════════════════════════════════════════════════
+// MODULE 4 — MASTER TERMINATION ENGINE & NET WORTH VALUATION
+// ═══════════════════════════════════════════════════════════
+
+async function hostTerminateSimulation() {
+  if(!confirm('TERMINATE the simulation and declare a winner? This is irreversible.')) return;
+  hlog('☠ TERMINATION SEQUENCE INITIATED.','hr');
+  if(MP.enabled&&_globalStateRef){
+    try{
+      await _setDoc(_globalStateRef,{status:'TERMINATED',winner:null,
+        terminatedAt:Date.now(),_serverTs:_serverTimestamp?_serverTimestamp():null},{merge:true});
+    }catch(e){console.warn('[BOS] Terminate:',e.message);}
+  } else { _runTerminationSequence(); }
+}
+
+async function _runTerminationSequence() {
+  const ov=document.getElementById('termination-overlay');
+  if(ov) ov.classList.add('open');
+  if(typeof stopTimer==='function') stopTimer();
+  await new Promise(r=>setTimeout(r,3000));
+
+  let nations=[];
+  if(MP.enabled&&_db){try{nations=await queryAllNations();}catch(_){}}
+  const localVal=_computeValuation(G);
+  const allResults=[
+    {nationKey:MP.nationKey||'LOCAL',nationName:G.nationName,
+     gdp:G.gdp,portfolio:portVal(),infra:G.buildings.reduce((s,b)=>s+b.cost,0),
+     agri:G.foodReservesTons*50,total:localVal},
+    ...nations.filter(n=>n.nationKey!==MP.nationKey).map(n=>({
+      nationKey:n.nationKey,nationName:n.nationName,gdp:n.gdp||0,
+      portfolio:0,infra:0,agri:0,total:n.gdp||0
+    })),
+  ].sort((a,b)=>b.total-a.total);
+
+  const winner=allResults[0];
+  if(MP.enabled&&MP.isLeader&&_globalStateRef){
+    try{await _updateDoc(_globalStateRef,{winner:winner.nationKey,
+      winnerName:winner.nationName,finalScores:allResults,
+      _serverTs:_serverTimestamp?_serverTimestamp():null});}catch(e){}
+  }
+  _renderVictoryScreen(winner,allResults);
+}
+
+function _computeValuation(g) {
+  return (g.gdp||0)+portVal()+(g.buildings||[]).reduce((s,b)=>s+b.cost,0)+(g.foodReservesTons||0)*50;
+}
+
+function _renderVictoryScreen(winner,all) {
+  const compEl=document.getElementById('tm-computing-msg');
+  const boxEl=document.getElementById('tm-winner-box');
+  if(compEl) compEl.style.display='none';
+  if(boxEl)  boxEl.style.display='block';
+  const isLocal=winner.nationKey===MP.nationKey;
+  const nameEl=document.getElementById('tm-winner-name');
+  const tagEl=document.getElementById('tm-tagline');
+  const tbody=document.getElementById('tm-rank-body');
+  if(nameEl) nameEl.textContent=winner.nationName.toUpperCase();
+  if(tagEl)  tagEl.textContent=isLocal
+    ?`CONGRATULATIONS ${winner.nationName.toUpperCase()}! YOU ARE THE SUPREME RULER OF BATTLE OF SUPREMACY!`
+    :`SUPREME RULER: ${winner.nationName.toUpperCase()} HAS CONQUERED THE BATTLEFIELD.`;
+  if(tbody) tbody.innerHTML=all.map((r,i)=>`
+    <tr>
+      <td class="tm-rank">${i===0?'👑':'#'+(i+1)}</td>
+      <td style="color:var(--nb);font-family:'Orbitron',sans-serif;font-size:.65rem;">${r.nationName}</td>
+      <td style="color:var(--ng2);">$${f(r.gdp)}</td>
+      <td style="color:var(--ng);">$${f(r.portfolio)}</td>
+      <td style="color:var(--ng2);">$${f(r.infra)}</td>
+      <td style="color:var(--ng);">$${f(r.agri)}</td>
+      <td style="color:var(--ng2);font-family:'Orbitron',sans-serif;font-weight:700;">$${f(r.total)}</td>
+    </tr>`).join('');
+}
+
+function _handleGlobalStateTermination(data) {
+  if(data.status!=='TERMINATED') return;
+  const ov=document.getElementById('termination-overlay');
+  if(ov&&!ov.classList.contains('open')){
+    ov.classList.add('open');
+    if(data.winner&&data.finalScores){
+      const w=data.finalScores.find(r=>r.nationKey===data.winner)||data.finalScores[0];
+      if(w) setTimeout(()=>_renderVictoryScreen(w,data.finalScores),2000);
+    } else if(!MP.isLeader){
+      setTimeout(async()=>{
+        const snap=await _getDoc(_globalStateRef);
+        const d=snap.data()||{};
+        if(d.finalScores){
+          const w=d.finalScores.find(r=>r.nationKey===d.winner)||d.finalScores[0];
+          if(w) _renderVictoryScreen(w,d.finalScores);
+        }
+      },5000);
+    }
+  }
+}
+
+// ── Patch attachGameSyncEngine to include termination + room scoping ──
+const _origSyncEngine = attachGameSyncEngine;
+attachGameSyncEngine = function(nationId, isHostClient) {
+  _origSyncEngine(nationId, isHostClient);
+  reinitialiseScopedRefs();
+  if(!_globalStateRef) return;
+  const termUnsub = _onSnapshot(_globalStateRef, snap => {
+    if(!snap.exists()) return;
+    _handleGlobalStateTermination(snap.data());
+  });
+  sessionState.unsubscribers.push(termUnsub);
 };
 </script>
 </body>
