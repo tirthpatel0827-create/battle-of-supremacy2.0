@@ -4444,36 +4444,42 @@ function closeHostAuth() {
 }
 
 function doHostAuth() {
-  const v = document.getElementById('host-pwd').value;
+  const v  = document.getElementById('host-pwd').value;
   const st = document.getElementById('auth-status');
   if (v === 'IronholdGodMode') {
     st.textContent = '✓ ACCESS GRANTED — LOADING COMMAND TOWER...';
-    st.className = 'auth-status ok';
+    st.className   = 'auth-status ok';
     setTimeout(() => {
       closeHostAuth();
       APP_MODE = 'host';
       document.getElementById('gateway').style.display = 'none';
       document.getElementById('host-shell').classList.add('on');
-      hostSessionStart = Date.now();
+      hostSessionStart    = Date.now();
       hostSessionInterval = setInterval(updateHostSessionTime, 1000);
-      initGame(); // still init game state so telemetry has data
+      initGame();
+
+      // ── Mount live Firestore nations listener for telemetry ──
+      // Runs before renderTelemTable so the table has real data immediately.
+      initHostTelemetryListener();
       renderTelemTable();
       startHostTelemRefresh();
     }, 700);
   } else {
     st.textContent = '✗ ACCESS DENIED — INVALID MASTER KEY';
-    st.className = 'auth-status err';
+    st.className   = 'auth-status err';
     document.getElementById('host-pwd').value = '';
     setTimeout(() => document.getElementById('host-pwd').focus(), 80);
   }
 }
 
 function updateHostSessionTime() {
-  const s = Math.floor((Date.now() - hostSessionStart) / 1000);
-  const mm = String(Math.floor(s/60)).padStart(2,'0');
-  const ss = String(s%60).padStart(2,'0');
+  const s  = Math.floor((Date.now() - hostSessionStart) / 1000);
+  const mm = String(Math.floor(s / 60)).padStart(2, '0');
+  const ss = String(s % 60).padStart(2, '0');
   const el = document.getElementById('h-sess');
-  if (el) el.textContent = `SESSION: ${mm}:${ss}`;
+  // Show room code alongside elapsed time if available
+  const roomCode = MP.roomId || getRoomFromUrl() || '';
+  if (el) el.textContent = roomCode ? `ROOM: ${roomCode} · ${mm}:${ss}` : `SESSION: ${mm}:${ss}`;
 }
 
 // ═══════════════════════════════════════════════════════
@@ -7136,52 +7142,145 @@ function recheckAlert() {
 }
 
 // ── Sanction (from host) ──
-function hostSanction(isHuman) {
-  if (!isHuman) {
-    hlog('⚖ AI nation sanctioned (simulated).','ho');
-    renderTelemTable(); return;
+// ── Sanction a live nation by ID ────────────────────────────
+async function hostSanction(nationId) {
+  const expiry = Date.now() + 60_000;
+
+  if (nationId === 'human' || nationId === MP.nationKey) {
+    // Local player — update in-memory and push
+    G.sanctioned = true; G.sanctionExpiry = expiry;
+    hlog(`⚖ ${G.nationName} SANCTIONED — 60s.`, 'hr');
+    pushGToFirestore();
+  } else if (MP.enabled && _db && MP.roomId) {
+    // Live Firestore nation
+    try {
+      await _updateDoc(_doc(_db, 'rooms', MP.roomId, 'nations', nationId), {
+        sanctioned: true, sanctionExpiry: expiry, _updatedAt: Date.now(),
+      });
+      const n = HOST_NATIONS_CACHE.find(x => x.id === nationId);
+      hlog(`⚖ ${n?.nation || nationId} SANCTIONED via Firestore — 60s.`, 'hr');
+    } catch (e) { console.warn('[BOS] Sanction write:', e.message); }
   }
-  G.sanctioned = true;
-  G.sanctionExpiry = Date.now() + 60000;
-  hlog('⚖ Player nation SANCTIONED — 60 seconds. Stock + Military blocked.','hr');
-  if (APP_MODE === 'player') plog('⚖ SANCTION APPLIED: Stock market & Military blocked for 60s.','dng');
-  showToast('⛔ SANCTIONED by Central Command for 60s','dng');
-  // Countdown refresh
+
+  // Expire countdown — refreshes table every second until expiry
   const si = setInterval(() => {
-    if (!G.sanctioned || Date.now() > G.sanctionExpiry) {
-      G.sanctioned = false; clearInterval(si);
-      if (APP_MODE === 'player') plog('⚖ Sanction expired. Access restored.','wrn');
-      renderTelemTable();
-    } else { renderTelemTable(); }
+    if (Date.now() >= expiry) {
+      clearInterval(si);
+      // Auto-lift for live nations
+      if (nationId !== 'human' && nationId !== MP.nationKey && MP.enabled && _db && MP.roomId) {
+        _updateDoc(_doc(_db, 'rooms', MP.roomId, 'nations', nationId),
+          { sanctioned: false, sanctionExpiry: 0, _updatedAt: Date.now() })
+          .catch(e => console.warn('[BOS] Sanction lift:', e.message));
+      } else { G.sanctioned = false; }
+    }
+    renderTelemTable();
   }, 1000);
 }
 
-// ── Inject capital (from host) ──
-function hostInject(playerId, isHuman) {
-  const inp = document.getElementById('inj-'+playerId);
+// ── Inject / extract capital from a live nation ──────────────
+async function hostInject(nationId, isLocal) {
+  const inp = document.getElementById('inj-' + nationId);
   const amt = parseFloat(inp?.value);
-  if (!amt || isNaN(amt)) { showToast('Enter a valid amount.','wrn'); return; }
-  const player = getAllPlayers().find(p => p.id === playerId);
-  if (isHuman) {
+  if (!amt || isNaN(amt)) { showToast('Enter a valid amount.', 'wrn'); return; }
+
+  if (isLocal || nationId === 'human' || nationId === MP.nationKey) {
     G.gdp = Math.max(0, G.gdp + amt);
-    hlog(`💉 Injected ${amt>=0?'+':''}$${f(amt)} into ${G.nationName}.`, amt>=0?'ho':'hr');
-    if (APP_MODE === 'player') { plog(`💉 HOST CAPITAL ${amt>=0?'INJECTION':'EXTRACTION'}: ${amt>=0?'+':''}$${f(amt)} applied to treasury.`, amt>=0?'suc':'dng'); updatePlayerUI(); }
-  } else {
-    if (player) player.gdp = Math.max(0, player.gdp + amt);
-    hlog(`💉 Injected ${amt>=0?'+':''}$${f(amt)} into AI ${player?.nation||playerId}.`,'ho');
+    hlog(`💉 ${amt >= 0 ? '+' : ''}$${f(amt)} → ${G.nationName}`, amt >= 0 ? 'ho' : 'hr');
+    pushGToFirestore();
+  } else if (MP.enabled && _db && MP.roomId) {
+    try {
+      await _updateDoc(_doc(_db, 'rooms', MP.roomId, 'nations', nationId), {
+        gdp: _increment(amt), _updatedAt: Date.now(), _updatedBy: 'HOST_INJECT',
+      });
+      const n = HOST_NATIONS_CACHE.find(x => x.id === nationId);
+      hlog(`💉 ${amt >= 0 ? '+' : ''}$${f(amt)} → ${n?.nation || nationId}`, amt >= 0 ? 'ho' : 'hr');
+    } catch (e) { console.warn('[BOS] Inject write:', e.message); }
   }
+
   if (inp) inp.value = '';
   renderTelemTable();
 }
 
 // ── Telemetry table ──
+// ── Live nations cache for host telemetry ───────────────────
+// Populated by initHostTelemetryListener() via onSnapshot.
+// Separate from LIVE_NATIONS (player-side) so the host view
+// is driven by its own dedicated listener.
+let HOST_NATIONS_CACHE = [];  // [{ id, nationName, commanderName, gdp, population, currentSick, foodStock, mil, eduLevel, totalDeaths, sanctioned, sanctionExpiry }]
+let _hostNationsUnsub  = null;
+
+// ── Module: Host Telemetry Listener ─────────────────────────
+// Mounts ONE onSnapshot on /rooms/{roomId}/nations (or fallback
+// /nations) and on each update rebuilds the cache + re-renders.
+// Call this from openHostAuth() / lobbyStartSimulation() once
+// the host is authenticated.
+function initHostTelemetryListener() {
+  if (_hostNationsUnsub) { _hostNationsUnsub(); _hostNationsUnsub = null; }
+  if (!_db) { console.warn('[BOS] initHostTelemetryListener: Firestore not ready'); return; }
+
+  // ── 1. Dynamic room resolution ───────────────────────────
+  // Priority: MP.roomId (set during session) → URL param → localStorage
+  const roomId = MP.roomId
+    || new URLSearchParams(window.location.search).get('room')
+    || (function(){ try { return localStorage.getItem('bos_roomId'); } catch(_){ return null; } })()
+    || '';
+
+  if (roomId && !MP.roomId) MP.roomId = roomId;   // back-fill MP if missing
+
+  // ── 2. Unified path — same collection players write to ───
+  const colRef = roomId
+    ? _collection(_db, 'rooms', roomId, 'nations')   // room-scoped (primary)
+    : _collection(_db, 'nations');                    // top-level fallback
+
+  console.info(`[BOS] Host telemetry listening on: ${roomId ? `rooms/${roomId}/nations` : 'nations'}`);
+
+  // ── Update the host header to show room code ─────────────
+  const sessEl = document.getElementById('h-sess');
+  if (sessEl) sessEl.textContent = roomId ? `ROOM: ${roomId}` : 'SESSION ACTIVE';
+
+  // ── 3. Live snapshot → cache → render ───────────────────
+  _hostNationsUnsub = _onSnapshot(
+    colRef,
+    (snap) => {
+      HOST_NATIONS_CACHE = [];
+      snap.forEach(docSnap => {
+        const d = docSnap.data();
+        HOST_NATIONS_CACHE.push({
+          id:             docSnap.id,
+          nation:         d.nationName         || docSnap.id,
+          cmdr:           d.commanderName      || '—',
+          gdp:            d.gdp                ?? 0,
+          pop:            d.population         ?? 0,
+          sick:           d.currentSick        ?? 0,
+          food:           d.foodStock          ?? 0,
+          mil:            d.military
+                            ? Object.values(d.military).reduce((s,u)=>s+(u.count||0),0)
+                            : 0,
+          edu:            d.eduLevel           ?? 1,
+          totalDeaths:    d.totalDeaths        ?? 0,
+          sanctioned:     d.sanctioned         ?? false,
+          sanctionExpiry: d.sanctionExpiry     ?? 0,
+          cycle:          d.cycle              ?? 0,
+          isHuman:        true,
+        });
+      });
+      renderTelemTable();
+    },
+    (err) => console.error('[BOS] Host telemetry listener error:', err.message)
+  );
+}
+
 function getAllPlayers() {
-  // Human player as first entry, then all live rival nations from Firestore
+  // In multiplayer host view: use live Firestore cache
+  if (MP.enabled && HOST_NATIONS_CACHE.length > 0) {
+    return HOST_NATIONS_CACHE;
+  }
+  // Single-player or no cache yet: return local player + LIVE_NATIONS
   return [
     {
       id:'human', nation:G.nationName, cmdr:G.commanderName, isHuman:true,
       gdp:G.gdp, pop:G.population, sick:G.currentSick,
-      food:G.foodStock, mil:getTotalPwr(), edu:G.eduLevel
+      food:G.foodStock, mil:getTotalPwr(), edu:G.eduLevel, totalDeaths:G.totalDeaths,
     },
     ...LIVE_NATIONS.map(n => ({ ...n, isHuman:false }))
   ];
@@ -7191,40 +7290,65 @@ function renderTelemTable() {
   const tbody = document.getElementById('telem-body');
   if (!tbody) return;
   tbody.innerHTML = '';
-  getAllPlayers().forEach(p => {
-    const sanctioned = p.isHuman && G.sanctioned;
-    const secsLeft = sanctioned ? Math.max(0, Math.ceil((G.sanctionExpiry - Date.now()) / 1000)) : 0;
+
+  const players = getAllPlayers();
+
+  // ── Aggregate stats across ALL connected nations ─────────
+  let totalGdp = 0, totalPop = 0, totalDeaths = 0, maxCycle = G.cycle;
+  players.forEach(p => {
+    totalGdp    += p.gdp    || 0;
+    totalPop    += p.pop    || 0;
+    totalDeaths += p.totalDeaths || 0;
+    if ((p.cycle || 0) > maxCycle) maxCycle = p.cycle;
+  });
+
+  // Update top metric cards
+  set('ht-cyc', maxCycle);
+  set('ht-gdp', '$' + f(totalGdp));
+  set('ht-pop', f(totalPop));
+  set('ht-dth', f(totalDeaths));
+
+  if (players.length === 0) {
     const tr = document.createElement('tr');
+    tr.innerHTML = `<td colspan="11" style="text-align:center;padding:20px;color:var(--td);font-size:.68rem;">
+      ${MP.enabled ? '◌ Waiting for nations to connect…' : 'No active nations.'}
+    </td>`;
+    tbody.appendChild(tr);
+    return;
+  }
+
+  // ── Per-nation rows ──────────────────────────────────────
+  players.forEach(p => {
+    const sanctioned = p.sanctioned && (p.sanctionExpiry || 0) > Date.now();
+    const secsLeft   = sanctioned ? Math.max(0, Math.ceil((p.sanctionExpiry - Date.now()) / 1000)) : 0;
+    const tr         = document.createElement('tr');
     if (sanctioned) tr.style.background = 'rgba(255,49,49,.05)';
     tr.innerHTML = `
-      <td><div class="pn-cell">${p.isHuman?'👤':'🤖'} ${p.nation}${sanctioned?`<span class="sanc-badge">SANCTIONED ${secsLeft}s</span>`:''}</div></td>
+      <td><div class="pn-cell">${p.isHuman!==false?'👤':'🌐'} ${p.nation}${sanctioned?`<span class="sanc-badge">SANCTIONED ${secsLeft}s</span>`:''}</div></td>
       <td style="color:rgba(255,170,0,.6);font-size:.65rem;">${p.cmdr}</td>
       <td style="color:var(--ho);font-family:'Orbitron',sans-serif;font-size:.68rem;">$${f(p.gdp)}</td>
       <td style="color:var(--nb);">${f(p.pop)}</td>
-      <td style="color:${p.sick>8000?'var(--hr)':'var(--ng2)'};">${f(p.sick)}</td>
-      <td style="color:${p.food<10000?'var(--hr)':'var(--ng)'};">${f(p.food)} T</td>
-      <td style="color:var(--hr);">${f(p.mil)}</td>
-      <td style="color:var(--tm);">Lv ${p.edu}</td>
-      <td>${sanctioned?`<span style="color:var(--hr);font-size:.62rem;">⛔ SANCTIONED</span>`:`<span style="color:var(--ng);font-size:.62rem;">✓ ACTIVE</span>`}</td>
+      <td style="color:${(p.sick||0)>8000?'var(--hr)':'var(--ng2)'};">${f(p.sick||0)}</td>
+      <td style="color:${(p.food||0)<10000?'var(--hr)':'var(--ng)'};">${f(p.food||0)} T</td>
+      <td style="color:var(--hr);">${f(p.mil||0)}</td>
+      <td style="color:var(--tm);">Lv ${p.edu||1}</td>
+      <td>${sanctioned
+        ? `<span style="color:var(--hr);font-size:.62rem;">⛔ SANCTIONED</span>`
+        : `<span style="color:var(--ng);font-size:.62rem;">✓ ACTIVE</span>`}</td>
       <td>
         <div class="inj-row">
           <input type="number" id="inj-${p.id}" placeholder="±$"
             style="width:80px;font-size:.67rem;padding:3px 6px;background:rgba(255,170,0,.05);border-color:var(--bd-o);color:var(--ho);">
-          <button class="hbtn hbo" style="font-size:.62rem;padding:3px 8px;" onclick="hostInject('${p.id}',${p.isHuman})">GO</button>
+          <button class="hbtn hbo" style="font-size:.62rem;padding:3px 8px;"
+            onclick="hostInject('${p.id}',${p.isHuman!==false})">GO</button>
         </div>
       </td>
       <td>
-        <button class="hbtn hbr" style="font-size:.6rem;padding:3px 8px;" onclick="hostSanction(${p.isHuman})" ${sanctioned?'disabled':''}>
-          ⚖ SANCTION
-        </button>
+        <button class="hbtn hbr" style="font-size:.6rem;padding:3px 8px;"
+          onclick="hostSanction('${p.id}')" ${sanctioned?'disabled':''}>⚖ SANCTION</button>
       </td>`;
     tbody.appendChild(tr);
   });
-  // Sync top stats
-  set('ht-cyc', G.cycle);
-  set('ht-gdp', '$'+f(G.gdp));
-  set('ht-pop', f(G.population));
-  set('ht-dth', f(G.totalDeaths));
 }
 
 // tickAI removed — rival nation stats update live via Firestore onSnapshot (LIVE_NATIONS)
@@ -8094,9 +8218,10 @@ function lobbyStartSimulation() {
   if (_lobbyRosterUnsub) { _lobbyRosterUnsub(); _lobbyRosterUnsub = null; }
   document.getElementById('room-gate').classList.remove('show');
   document.getElementById('h-header') && (document.getElementById('host-shell').classList.add('on'));
-  // Redirect host to the host dashboard — gateway stays hidden
   APP_MODE = 'host';
   reinitialiseScopedRefs();
+  // Mount the live nations listener so the telemetry table populates immediately
+  initHostTelemetryListener();
   if (typeof renderTelemTable === 'function') renderTelemTable();
   if (typeof startTimer === 'function') startTimer();
   _saveSession();
