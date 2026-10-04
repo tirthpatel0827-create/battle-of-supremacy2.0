@@ -1674,6 +1674,79 @@ input[type=range]::-webkit-slider-thumb{
 .tm-table tr:first-child td{color:var(--ng2);font-family:'Orbitron',sans-serif;}
 .tm-rank{font-family:'Orbitron',sans-serif;font-size:.65rem;color:var(--ng2);}
 
+/* ══ CHEMICAL BAY ══════════════════════════════════════════ */
+#chemical-bay-container{display:flex;flex-direction:column;gap:16px;}
+.chem-section-title{font-family:'Orbitron',sans-serif;font-size:.72rem;letter-spacing:2px;
+  margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--bd-b);}
+.chem-section-title.refine{color:var(--ng2);}
+.chem-section-title.exchange{color:var(--nb);}
+
+/* Raw material selector */
+.raw-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px;}
+.raw-card{background:var(--bg2);border:2px solid var(--bd-b);border-radius:5px;
+  padding:10px 8px;text-align:center;cursor:pointer;transition:all .2s;user-select:none;}
+.raw-card:hover{border-color:var(--nb);}
+.raw-card.selected{border-color:var(--ng);background:rgba(57,255,20,.07);
+  box-shadow:0 0 12px rgba(57,255,20,.2);}
+.raw-card.disabled{opacity:.35;cursor:not-allowed;}
+.raw-icon{font-size:1.4rem;margin-bottom:4px;}
+.raw-name{font-family:'Orbitron',sans-serif;font-size:.58rem;color:var(--nb);letter-spacing:1px;}
+.raw-qty{font-size:.65rem;color:var(--ng2);margin-top:3px;}
+
+/* Finished product cards */
+.finished-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;}
+.fin-card{background:var(--bg3);border:1px solid var(--bd-b);border-radius:4px;padding:10px 12px;}
+.fin-card.available{border-color:var(--ng2);background:rgba(255,215,0,.04);}
+.fin-name{font-family:'Orbitron',sans-serif;font-size:.63rem;color:var(--ng2);margin-bottom:4px;}
+.fin-qty{font-size:.6rem;color:var(--td);margin-bottom:8px;}
+.fin-btns{display:flex;gap:5px;}
+.fin-btn-refine{flex:1;font-size:.58rem;padding:4px;background:rgba(255,215,0,.08);
+  border:1px solid var(--ng2);color:var(--ng2);border-radius:3px;cursor:pointer;transition:all .15s;}
+.fin-btn-refine:hover{background:rgba(255,215,0,.2);}
+.fin-btn-refine:disabled{opacity:.3;cursor:not-allowed;}
+.fin-btn-use{flex:1;font-size:.58rem;padding:4px;background:rgba(57,255,20,.08);
+  border:1px solid var(--ng);color:var(--ng);border-radius:3px;cursor:pointer;transition:all .15s;}
+.fin-btn-use:hover{background:rgba(57,255,20,.2);}
+.fin-btn-use:disabled{opacity:.3;cursor:not-allowed;}
+.fin-btn-list{flex:1;font-size:.58rem;padding:4px;background:rgba(0,242,255,.08);
+  border:1px solid var(--nb);color:var(--nb);border-radius:3px;cursor:pointer;transition:all .15s;}
+.fin-btn-list:hover{background:rgba(0,242,255,.2);}
+
+/* P2P Exchange */
+.p2p-controls{display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap;align-items:flex-end;}
+.p2p-select{padding:6px 8px;background:var(--bg2);border:1px solid var(--bd-b);
+  color:var(--nb);font-family:'Share Tech Mono',monospace;font-size:.7rem;border-radius:3px;flex:1;}
+.p2p-input{padding:6px 8px;background:var(--bg2);border:1px solid var(--bd-b);
+  color:var(--ng2);font-family:'Orbitron',sans-serif;font-size:.7rem;border-radius:3px;width:120px;}
+.p2p-table{width:100%;border-collapse:collapse;font-size:.68rem;}
+.p2p-table th{font-family:'Orbitron',sans-serif;font-size:.55rem;color:var(--td);padding:5px 8px;
+  border-bottom:1px solid var(--bd-b);text-align:left;letter-spacing:1px;}
+.p2p-table td{padding:7px 8px;border-bottom:1px solid rgba(255,255,255,.04);vertical-align:middle;}
+.p2p-badge{font-family:'Orbitron',sans-serif;font-size:.55rem;padding:2px 6px;border-radius:2px;
+  background:rgba(0,242,255,.1);border:1px solid var(--bd-b);color:var(--nb);}
+.p2p-badge.own{background:rgba(255,215,0,.1);border-color:var(--ng2);color:var(--ng2);}
+
+/* Podium / game-over modal */
+#podium-overlay{display:none;position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,.97);
+  align-items:center;justify-content:center;flex-direction:column;gap:20px;}
+#podium-overlay.open{display:flex;}
+.podium-box{max-width:680px;width:96vw;background:var(--bg1);border:1px solid var(--ng2);
+  border-radius:8px;overflow:hidden;box-shadow:0 0 100px rgba(255,215,0,.2);}
+.podium-bar{height:3px;background:linear-gradient(90deg,var(--ng2),var(--ng),var(--ng2));}
+.podium-body{padding:28px 30px;}
+.podium-headline{font-family:'Orbitron',sans-serif;font-size:1rem;font-weight:900;letter-spacing:3px;
+  color:var(--ng2);text-align:center;margin-bottom:6px;}
+.podium-sub{font-size:.68rem;color:var(--td);text-align:center;margin-bottom:20px;}
+.podium-row{display:flex;align-items:center;gap:14px;background:var(--bg2);border-radius:5px;
+  padding:14px 16px;margin-bottom:10px;border:1px solid var(--bd-b);}
+.podium-row.gold{border-color:var(--ng2);background:rgba(255,215,0,.05);}
+.podium-row.silver{border-color:rgba(180,180,180,.4);background:rgba(180,180,180,.03);}
+.podium-rank{font-family:'Orbitron',sans-serif;font-size:1.6rem;min-width:40px;text-align:center;}
+.podium-info{flex:1;}
+.podium-nation{font-family:'Orbitron',sans-serif;font-size:.8rem;color:var(--nb);}
+.podium-detail{font-size:.63rem;color:var(--td);margin-top:4px;line-height:1.7;}
+.podium-total{font-family:'Orbitron',sans-serif;font-size:1rem;color:var(--ng2);text-align:right;}
+
 @media(max-width:900px){
   #p-layout{grid-template-columns:1fr;}
   #p-sidebar{flex-direction:row;overflow-x:auto;padding:7px;border-right:none;border-bottom:1px solid var(--bd-b);}
@@ -1872,7 +1945,7 @@ input[type=range]::-webkit-slider-thumb{
       <div class="ns-label">FINANCE HUB</div>
       <button class="nb-btn" onclick="showP(this,'econ')"><span class="ic">💰</span>Economy</button>
       <button class="nb-btn" onclick="showP(this,'farm')"><span class="ic">🌾</span>Farming</button>
-      <button class="nb-btn" onclick="showP(this,'stks')"><span class="ic">📈</span>Trade Port</button>
+      <button class="nb-btn" onclick="showP(this,'stks');renderChemicalBay()"><span class="ic">⚗</span>Chemical Bay</button>
       <button class="nb-btn" onclick="showP(this,'tech')"><span class="ic">🔬</span>Tech Park</button>
       <div class="ns-label">MILITARY HUB</div>
       <button class="nb-btn" onclick="showP(this,'mil')"><span class="ic">⚔</span>Military</button>
@@ -2031,107 +2104,63 @@ input[type=range]::-webkit-slider-thumb{
       <!-- ══════════════════════════════════════════════
            MACROECONOMIC TRADING TERMINAL
       ══════════════════════════════════════════════ -->
+      <!-- ═══ CHEMICAL BAY — replaces Trade Port ═══ -->
       <div class="panel" id="pn-stks">
+        <div id="chemical-bay-container">
 
-        <!-- Global Ticker Newsfeed -->
-        <div id="mkt-newsfeed" style="background:rgba(0,242,255,.04);border:1px solid var(--bd-b);
-          border-radius:3px;overflow:hidden;height:28px;margin-bottom:12px;display:flex;align-items:center;">
-          <span style="font-family:'Orbitron',sans-serif;font-size:.55rem;color:var(--nb);
-            padding:0 10px;white-space:nowrap;flex-shrink:0;border-right:1px solid var(--bd-b);">
-            📡 MARKET WIRE
-          </span>
-          <div id="mkt-news-track" style="white-space:nowrap;animation:marquee 30s linear infinite;
-            font-size:.62rem;color:var(--td);padding:0 12px;"></div>
-        </div>
-
-        <div style="display:grid;grid-template-columns:190px 1fr;gap:12px;min-height:520px;">
-
-          <!-- Left: Ticker Selector -->
+          <!-- ── UPPER: FARMING & REFINEMENT ── -->
           <div>
-            <div style="font-family:'Orbitron',sans-serif;font-size:.58rem;letter-spacing:2px;
-              color:var(--td);margin-bottom:8px;">MARKET ASSETS</div>
-            <div id="stk-selector" style="display:flex;flex-direction:column;gap:4px;"></div>
+            <div class="chem-section-title refine">⚗ UPPER REFINEMENT BAY — RAW HARVEST &amp; PROCESSING</div>
+            <div style="font-size:.65rem;color:var(--td);margin-bottom:12px;">
+              Select up to 2 raw materials to harvest each cycle. Refine into finished products ($25,000 + 100 raw units → 50 finished units).
+            </div>
 
-            <div style="font-family:'Orbitron',sans-serif;font-size:.58rem;letter-spacing:2px;
-              color:var(--td);margin-top:12px;margin-bottom:8px;">IPO LISTINGS</div>
-            <div id="ipo-selector" style="display:flex;flex-direction:column;gap:4px;">
-              <div style="font-size:.62rem;color:var(--td);" id="ipo-empty-msg">No active IPOs</div>
+            <!-- Raw material selector (4 cards) -->
+            <div class="raw-grid" id="raw-selector-grid"></div>
+
+            <!-- Inventory summary -->
+            <div class="g4 mb8" id="raw-inventory-row"></div>
+
+            <!-- Finished products grid (8 cards, 2 per raw) -->
+            <div class="finished-grid" id="finished-products-grid"></div>
+          </div>
+
+          <!-- ── LOWER: P2P EXCHANGE ── -->
+          <div>
+            <div class="chem-section-title exchange">↕ LOWER P2P COMMODITY EXCHANGE</div>
+            <div style="font-size:.65rem;color:var(--td);margin-bottom:12px;">
+              List your finished products at a custom price. Other nations can buy instantly via atomic transaction. Firestore-backed order book — live across all connected clients.
+            </div>
+
+            <!-- Create listing controls -->
+            <div class="p2p-controls">
+              <select class="p2p-select" id="p2p-product-sel">
+                <option value="">— Select Product —</option>
+              </select>
+              <input  type="number" class="p2p-input" id="p2p-qty-inp"
+                placeholder="Qty" min="1" style="width:80px;">
+              <input  type="number" class="p2p-input" id="p2p-price-inp"
+                placeholder="Price $" min="1">
+              <button class="btn bbg" style="font-size:.65rem;padding:6px 14px;"
+                onclick="createMarketListing()">LIST NOW</button>
+            </div>
+
+            <!-- Live order board -->
+            <div style="overflow-x:auto;">
+              <table class="p2p-table" id="p2p-order-table">
+                <thead><tr>
+                  <th>PRODUCT</th><th>SELLER</th><th>QTY</th>
+                  <th>PRICE</th><th>TOTAL</th><th>ACTION</th>
+                </tr></thead>
+                <tbody id="p2p-order-tbody">
+                  <tr><td colspan="6" style="text-align:center;padding:16px;color:var(--td);">No listings yet.</td></tr>
+                </tbody>
+              </table>
             </div>
           </div>
 
-          <!-- Right: Terminal -->
-          <div style="display:flex;flex-direction:column;gap:10px;">
-
-            <!-- Stock header -->
-            <div class="card" style="margin-bottom:0;padding:10px 14px;">
-              <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
-                <div>
-                  <div style="font-family:'Orbitron',sans-serif;font-size:1.1rem;font-weight:700;
-                    color:var(--nb);text-shadow:var(--glb);" id="stk-ticker-hdr">$TITN</div>
-                  <div style="font-size:.65rem;color:var(--td);" id="stk-name-hdr">Titan Defense Tech</div>
-                  <!-- Sentiment / Utilization badge — updated by renderStockTerminal() -->
-                  <div id="stk-sentiment-badge" style="font-family:'Orbitron',sans-serif;font-size:.58rem;
-                    letter-spacing:1.5px;margin-top:4px;color:var(--ng);">MOMENTUM BUILDING</div>
-                </div>
-                <div style="display:flex;gap:14px;align-items:center;">
-                  <div style="text-align:center;">
-                    <div style="font-size:.55rem;color:var(--td);letter-spacing:1px;">PRICE</div>
-                    <div style="font-family:'Orbitron',sans-serif;font-size:1.2rem;color:var(--ng2);" id="stk-price-hdr">$0</div>
-                  </div>
-                  <div style="text-align:center;">
-                    <div style="font-size:.55rem;color:var(--td);letter-spacing:1px;">CYCLE CHG</div>
-                    <div style="font-family:'Orbitron',sans-serif;font-size:.9rem;" id="stk-chg-hdr">0%</div>
-                  </div>
-                  <div style="text-align:center;">
-                    <div style="font-size:.55rem;color:var(--td);letter-spacing:1px;">SECTOR</div>
-                    <div style="font-size:.68rem;color:var(--nb);" id="stk-sec-hdr">—</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- SVG Price Chart -->
-            <div class="card" style="margin-bottom:0;padding:10px;">
-              <div style="font-family:'Orbitron',sans-serif;font-size:.58rem;color:var(--td);
-                letter-spacing:1.5px;margin-bottom:6px;">15-CYCLE HISTORY + SMA-3</div>
-              <svg id="stk-chart" width="100%" height="120" style="display:block;"></svg>
-            </div>
-
-            <!-- Order Panel -->
-            <div class="card" style="margin-bottom:0;padding:12px;">
-              <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:12px;">
-                <div class="met" style="padding:8px;">
-                  <div class="ml">Shares Owned</div>
-                  <div class="mv grn" id="ord-shares">0</div>
-                </div>
-                <div class="met" style="padding:8px;">
-                  <div class="ml">Avg Buy Price</div>
-                  <div class="mv" id="ord-avg">$0</div>
-                </div>
-                <div class="met" style="padding:8px;">
-                  <div class="ml">Unrealized P&L</div>
-                  <div class="mv" id="ord-pnl">$0</div>
-                </div>
-              </div>
-              <!-- Execution buttons — Quick-Action Position Sizing -->
-              <div style="display:flex;gap:6px;flex-wrap:wrap;">
-                <button class="btn bbg" style="flex:1;font-size:.6rem;" onclick="executeBuyByPercent(0.10)">BUY 10%</button>
-                <button class="btn bbg" style="flex:1;font-size:.6rem;" onclick="executeBuyByPercent(0.50)">BUY 50%</button>
-                <button class="btn bbg" style="flex:1;font-size:.6rem;" onclick="executeBuyByPercent(1.00)">BUY MAX</button>
-                <button class="btn bbr" style="flex:1;font-size:.6rem;" onclick="executeSellByPercent(0.50)">SELL 50%</button>
-                <button class="btn bbr" style="flex:1;font-size:.6rem;" onclick="executeSellByPercent(1.00)">SELL ALL</button>
-              </div>
-            </div>
-
-            <!-- Portfolio summary -->
-            <div class="g2" style="gap:8px;">
-              <div class="met"><div class="ml">Portfolio Value</div><div class="mv gld" id="stk-val">$0</div></div>
-              <div class="met"><div class="ml">Total P&L</div><div class="mv" id="stk-pnl">$0</div></div>
-            </div>
-
-          </div><!-- end right terminal -->
-        </div><!-- end grid -->
-      </div><!-- end pn-stks -->
+        </div>
+      </div><!-- end pn-stks / chemical bay -->
 
       <!-- ═══════════════════════════════════════════════════
            TECH PARK — PROJECT SILICON (4 PANELS)
@@ -2618,10 +2647,17 @@ input[type=range]::-webkit-slider-thumb{
         <div style="font-size:.68rem;color:var(--td);flex:1;">
           Ends the simulation for all connected nations simultaneously. Computes final Net Worth valuations and declares a Supreme winner. This action is irreversible.
         </div>
-        <button class="hbtn hbr" style="padding:10px 20px;font-size:.68rem;letter-spacing:1.5px;"
-          onclick="hostTerminateSimulation()">
-          ☠ TERMINATE SIMULATION &amp; DECLARE SUPREMACY
-        </button>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+          <button class="hbtn hbr" style="padding:10px 20px;font-size:.68rem;letter-spacing:1.5px;"
+            onclick="hostTerminateSimulation()">
+            ☠ TERMINATE SIMULATION &amp; DECLARE SUPREMACY
+          </button>
+          <button class="hbtn" style="padding:10px 20px;font-size:.68rem;letter-spacing:1.5px;
+            background:rgba(255,215,0,.1);border-color:var(--ng2);color:var(--ng2);"
+            onclick="hostFinishGame()">
+            🏆 FINISH GAME &amp; SHOW PODIUM
+          </button>
+        </div>
       </div>
     </div>
 
@@ -2850,6 +2886,22 @@ input[type=range]::-webkit-slider-thumb{
     <!-- Small print -->
     <div style="text-align:center;font-size:.6rem;color:var(--td);padding-bottom:8px;">
       Need an invite? Ask your host for the room code or the full invite URL.
+    </div>
+  </div>
+</div>
+
+<!-- ══ PODIUM / GAME-OVER MODAL ══ -->
+<div id="podium-overlay">
+  <div class="podium-box">
+    <div class="podium-bar"></div>
+    <div class="podium-body">
+      <div class="podium-headline">⚔ BATTLE OF SUPREMACY — FINAL STANDINGS</div>
+      <div class="podium-sub" id="podium-sub">Calculating national net worth…</div>
+      <div id="podium-rows"></div>
+      <button class="btn bbg" style="width:100%;margin-top:18px;font-size:.7rem;"
+        onclick="document.getElementById('podium-overlay').classList.remove('open')">
+        ✕ CLOSE PODIUM
+      </button>
     </div>
   </div>
 </div>
@@ -3297,15 +3349,19 @@ function roomPath(...segments) {
   return _doc(_db, 'rooms', MP.roomId, ...segments);
 }
 
-// ── Click throttle: prevents double-firing on 40-60 laptop network lag ──
-// Wrap any action that writes to Firestore with this — returns false if
-// the same button was clicked within 800 ms (debounce window).
-function _throttleClick() {
+// ── firewallAllowWrite — canonical debounce for all Firestore button clicks ──
+// Returns false if any write was made within the debounce window (800 ms).
+// Prevents double-spend, duplicate confirms, and network-lag re-fires on
+// 60+ simultaneous campus laptop clients.
+// Usage:  if (!firewallAllowWrite()) return;
+function firewallAllowWrite() {
   const now = Date.now();
-  if (now - MP._clickTs < 800) return false;  // reject rapid re-click
+  if (now - MP._clickTs < 800) return false;
   MP._clickTs = now;
   return true;
 }
+// Legacy alias — existing call sites use _throttleClick()
+const _throttleClick = firewallAllowWrite;
 
 // ── v10 Modular SDK loader ───────────────────────────────────
 // Dynamically imports Firebase v10 ESM modules from the official CDN.
@@ -3367,19 +3423,10 @@ function loadFirebase() {
       _db = storeMod.getFirestore(_app);
     }
 
-    // Enable multi-tab IndexedDB persistence (browser CDN API)
-    // This is the correct v10 browser method — NOT enablePersistence().
-    storeMod.enableIndexedDbPersistence(_db).catch((err) => {
-      if (err.code === 'failed-precondition') {
-        // Multiple tabs open — persistence only works in one tab at a time.
-        // Safe to ignore; the other tab holds the lock.
-        console.info('Firestore persistence: multi-tab lock held by another tab.');
-      } else if (err.code === 'unimplemented') {
-        // Browser does not support IndexedDB (very rare in 2024).
-        console.info('Firestore persistence: IndexedDB not available in this browser.');
-      }
-      // Either way, Firestore continues online — only persistence is affected.
-    });
+    // Note: enableIndexedDbPersistence() removed — causes sandbox promise
+    // deadlocks under 60+ simultaneous clients (failed-precondition race).
+    // Firestore operates in memory-only mode; session data persists via
+    // localStorage (SESSION_KEY) which is unaffected.
     // ── END FIX ────────────────────────────────────────────
 
   })();
@@ -3919,6 +3966,10 @@ function enterPlayerShell() {
   }
   // Start live rival nations listener
   attachNationsListener();
+  // Chemical Bay: initialise state, render, attach live P2P board
+  _initChemState();
+  renderChemicalBay();
+  attachP2PListener();
 
   // ── Inject logout button into player header (once) ──────
   if (!document.getElementById('logout-btn')) {
@@ -4217,50 +4268,97 @@ function attachGameSyncEngine(nationId, isHostClient = false) {
   sessionState.myNationId = nationId;
   sessionState.isHost     = isHostClient;
 
-  // ── 1. Tear down all existing listeners (memory-leak prevention) ──
+  // ── 1. Tear down all existing listeners ──────────────────
   sessionState.unsubscribers.forEach(unsub => { try { unsub(); } catch(_) {} });
   sessionState.unsubscribers = [];
 
-  // ── Document references ──────────────────────────────────
-  _globalStateRef = _doc(_db, 'session', 'globalState');
-  _marketStateRef = _doc(_db, 'market',  'marketState');
-  _newsfeedCol    = _collection(_db, 'newsfeed');
+  // ── Document references — ALWAYS room-scoped ─────────────
+  // Use MP.roomId which is seeded from URL ?room= param.
+  // Bare /session/globalState was the old non-room path that caused
+  // the crisis lever disconnect — crises were written to the room doc
+  // but players were listening to a different top-level path.
+  const roomId = MP.roomId || getRoomFromUrl() || '';
+  if (roomId) {
+    _globalStateRef = _doc(_db, 'rooms', roomId, 'session',  'globalState');
+    _marketStateRef = _doc(_db, 'rooms', roomId, 'market',   'marketState');
+    _newsfeedCol    = _collection(_db, 'rooms', roomId, 'newsfeed');
+  } else {
+    // Offline / single-player fallback
+    _globalStateRef = _doc(_db, 'session', 'globalState');
+    _marketStateRef = _doc(_db, 'market',  'marketState');
+    _newsfeedCol    = _collection(_db, 'newsfeed');
+  }
 
-  // ── 2. Global Session State: cycle clock + crisis flags ──
-  // PURELY REACTIVE — this callback NEVER writes back to globalState.
-  // Writing here would re-trigger onSnapshot and cause the cascade loop.
+  // ── 2. Global Session State — PURELY REACTIVE ────────────
+  // This callback NEVER writes back to globalState.
+  // All crisis fields written by host are consumed here by players.
   const globalUnsub = _onSnapshot(
     _globalStateRef,
     (snap) => {
       if (!snap.exists()) return;
       const data = snap.data();
       const incomingCycle = data.currentCycle || 1;
-
-      // Detect a new cycle tick pushed by the host
-      const isNewCycle = incomingCycle > (sessionState.currentCycle || 0);
+      const isNewCycle    = incomingCycle > (sessionState.currentCycle || 0);
 
       sessionState.currentCycle  = incomingCycle;
-      sessionState.activeDrought = data.isDroughtActive || false;
+      sessionState.activeDrought = data.isDrought ?? data.isDroughtActive ?? false;
       G.cycle     = incomingCycle;
       G.isDrought = sessionState.activeDrought;
 
-      // ── NON-HOST CLIENTS: run nation update once per cycle tick ──
-      // Host runs runFiscalCycle() on its own timer — clients react here.
-      // Guard: only fire if this is a genuine new cycle AND we are not the host.
+      // ── Non-host cycle processing ─────────────────────────
       if (isNewCycle && !sessionState.isHost && APP_MODE === 'player' && MP.nationKey) {
         processCycleForNation(MP.nationKey, incomingCycle);
       }
 
-      // Update drought UI
+      // ── PLAYER CRISIS HANDLERS ────────────────────────────
       if (APP_MODE === 'player') {
-        updateFarmPanel();
-        renderFarmGrids();
+
+        // — Dustbowl —
+        if (data.isDrought === true) {
+          G.isDrought = true;
+          G.droughtCyclesActive = G.droughtCyclesActive || 0;
+          updateFarmPanel();
+          renderFarmGrids();
+          _showCrisisBanner('🌵 CRISIS ALERT: DUSTBOWL ACTIVATED BY HOST', 'dng');
+        } else if (data.isDrought === false && G.isDrought) {
+          G.isDrought = false;
+          G.droughtCyclesActive = 0;
+          G.droughtConsumptionRate = 0;
+          updateFarmPanel();
+          renderFarmGrids();
+          _clearCrisisBanner('drought');
+        }
+
+        // — Pathogen X —
+        if (data.pathogenActive === true) {
+          G.pandemicActive    = true;
+          G.pandemicCyclesLeft = data.pandemicCyclesLeft ?? 2;
+          // sicknessMultiplier applied in processCycleForNation via G.pandemicActive flag
+          _showCrisisBanner('☣ BIO-HAZARD: PATHOGEN X DEPLOYED', 'dng');
+        } else if (data.pathogenActive === false && G.pandemicActive) {
+          G.pandemicActive    = false;
+          G.pandemicCyclesLeft = 0;
+          _clearCrisisBanner('pathogen');
+        }
+
+        // — Black Friday —
+        if (data.marketCrashTriggered === true) {
+          G.marketCrashArmed = true;
+          _showCrisisBanner('💣 BLACK FRIDAY: MARKET CRASH INCOMING NEXT CYCLE', 'dng');
+        }
+
+        // — Termination —
+        _handleGlobalStateTermination(data);
+
+        // Sync drought-warn badge in player header
         const dw = document.getElementById('drought-warn');
-        if (dw) dw.style.display = sessionState.activeDrought ? 'block' : 'none';
+        if (dw) dw.style.display = G.isDrought ? 'block' : 'none';
       }
+
+      // ── HOST UI sync ──────────────────────────────────────
       if (APP_MODE === 'host') {
         const lbl = document.getElementById('drought-lbl');
-        if (lbl) lbl.textContent = sessionState.activeDrought ? '🔴 ACTIVE — FARMS LOCKED' : 'INACTIVE';
+        if (lbl) lbl.textContent = G.isDrought ? '🔴 ACTIVE — FARMS LOCKED' : 'INACTIVE';
       }
     },
     (err) => console.error('[BOS] Global listener error:', err)
@@ -4518,6 +4616,15 @@ let timerSec = 60;
 // ═══════════════════════════════════════════════════════════
 async function processCycleForNation(nationId, cycleNumber) {
   if (!_db || !MP.roomId || !nationId) return;
+
+  // ── Concurrency jitter (non-host clients only) ──────────
+  // Spreads Firestore writes across 100–1400 ms to prevent
+  // 60+ simultaneous write spikes on the same cycle tick.
+  // Host writes immediately — it is the authority.
+  if (!sessionState.isHost) {
+    const jitter = 100 + Math.floor(Math.random() * 1300);
+    await new Promise(r => setTimeout(r, jitter));
+  }
 
   const nationRef = _doc(_db, 'rooms', MP.roomId, 'nations', nationId);
 
@@ -7019,15 +7126,44 @@ function plog(msg, type='inf') {
 // ═══════════════════════════════════════════════════════
 // HOST — CHAOS MATRIX FUNCTIONS
 // ═══════════════════════════════════════════════════════
+// ── Crisis banner helpers (player-side display) ──────────────
+// Renders a dismissable alert bar at the top of the player shell.
+function _showCrisisBanner(msg, type) {
+  let bar = document.getElementById('crisis-banner');
+  if (!bar) {
+    bar = document.createElement('div');
+    bar.id = 'crisis-banner';
+    bar.style.cssText = [
+      'position:fixed','top:0','left:0','right:0','z-index:9800',
+      'padding:10px 18px','font-family:Orbitron,sans-serif','font-size:.7rem',
+      'letter-spacing:1.5px','text-align:center','cursor:pointer',
+      'background:rgba(255,49,49,.92)','color:#fff',
+      'box-shadow:0 2px 20px rgba(255,49,49,.5)',
+      'animation:rpulse .8s infinite',
+    ].join(';');
+    bar.onclick = () => bar.remove();
+    document.body.insertBefore(bar, document.body.firstChild);
+  }
+  bar.dataset.type = type;
+  bar.textContent  = '⚠ ' + msg + ' (tap to dismiss)';
+  bar.style.background = type === 'dng'
+    ? 'rgba(255,49,49,.92)'
+    : 'rgba(57,255,20,.15)';
+}
+
+function _clearCrisisBanner(typeKey) {
+  const bar = document.getElementById('crisis-banner');
+  if (bar && bar.dataset.type === typeKey) bar.remove();
+}
+
 function hostToggleDrought(chk) {
   G.isDrought = chk.checked;
   const box = document.getElementById('cb-drought');
   const lbl = document.getElementById('drought-lbl');
   const st  = document.getElementById('drought-st');
   if (G.isDrought) {
-    // Reset compounding state fresh each time drought is activated
     G.droughtCyclesActive    = 0;
-    G.droughtConsumptionRate = 0; // will be seeded from population on first drought cycle
+    G.droughtConsumptionRate = 0;
     lbl.textContent = '🔴 ACTIVE — FARMS LOCKED';
     lbl.style.color = 'var(--hr)';
     box.classList.add('armed');
@@ -7035,12 +7171,19 @@ function hostToggleDrought(chk) {
     st.className = 'cr-status on';
     triggerAlert('CRITICAL SYSTEM ALERT: GLOBAL DROUGHT DECLARED BY CENTRAL COMMAND — ALL AGRICULTURAL OUTPUT SUSPENDED');
     hlog('🌵 PROJECT DUSTBOWL activated — isDrought = true. Consumption rate compounding at ×1.15/cycle.','hr');
-    // Macro: drought triggers $AGRI drop -15% to -30% over coming cycles
     pushMacro('AGRI', -(0.15 + Math.random() * 0.15));
+
+    // ── Write to room-scoped globalState so all player clients react ──
+    if (MP.enabled && _globalStateRef) {
+      _updateDoc(_globalStateRef, {
+        isDrought:             true,
+        droughtCyclesRemaining: 2,
+        _updatedAt:            Date.now(),
+      }).catch(e => console.warn('[BOS] Drought write:', e.message));
+    }
   } else {
-    // Reset compounding state on deactivation
     G.droughtCyclesActive    = 0;
-    G.droughtConsumptionRate = 0; // will re-seed from population if drought reactivated
+    G.droughtConsumptionRate = 0;
     lbl.textContent = 'INACTIVE';
     lbl.style.color = '';
     box.classList.remove('armed');
@@ -7048,44 +7191,69 @@ function hostToggleDrought(chk) {
     st.className = 'cr-status';
     hlog('🌵 Project Dustbowl deactivated — drought state reset. Farming unlocked.','ho');
     recheckAlert();
+
+    if (MP.enabled && _globalStateRef) {
+      _updateDoc(_globalStateRef, {
+        isDrought:             false,
+        droughtCyclesRemaining: 0,
+        _updatedAt:            Date.now(),
+      }).catch(e => console.warn('[BOS] Drought clear write:', e.message));
+    }
   }
   updateCrisisStrip();
-  // Immediately update BOTH farm panel AND re-render farm grids so buttons lock/unlock without waiting for next cycle
   updateFarmPanel();
   renderFarmGrids();
 }
 
 function hostTriggerPandemic() {
-  G.pandemicActive = true;
+  G.pandemicActive     = true;
   G.pandemicCyclesLeft = 2;
   const btn = document.getElementById('pand-btn');
   const st  = document.getElementById('pand-st');
   const box = document.getElementById('cb-pandemic');
   btn.classList.add('armed');
   btn.textContent = '🦠 PATHOGEN DEPLOYED';
-  btn.disabled = true;
-  st.textContent = 'Status: ACTIVE — 2 cycles remaining';
-  st.className = 'cr-status on';
+  btn.disabled    = true;
+  st.textContent  = 'Status: ACTIVE — 2 cycles remaining';
+  st.className    = 'cr-status on';
   box.classList.add('armed');
   triggerAlert('CRITICAL SYSTEM ALERT: PATHOGEN X RELEASED BY CENTRAL COMMAND — PANDEMIC EMERGENCY DECLARED — QUARANTINE FAILING');
   hlog('🦠 PATHOGEN X deployed — pandemic sickness = 25% for 2 cycles.','hr');
   updateCrisisStrip();
+
+  // ── Write to room-scoped globalState so all player clients react ──
+  if (MP.enabled && _globalStateRef) {
+    _updateDoc(_globalStateRef, {
+      pathogenActive:      true,
+      sicknessMultiplier:  0.25,
+      pandemicCyclesLeft:  2,
+      _updatedAt:          Date.now(),
+    }).catch(e => console.warn('[BOS] Pandemic write:', e.message));
+  }
 }
 
 function syncHostPandemicUI() {
-  // Called when pandemic naturally expires
   const btn = document.getElementById('pand-btn');
   const st  = document.getElementById('pand-st');
   const box = document.getElementById('cb-pandemic');
   if (!btn) return;
   btn.classList.remove('armed');
   btn.textContent = '⚡ DEPLOY PATHOGEN X';
-  btn.disabled = false;
-  st.textContent = 'Status: Cleared';
-  st.className = 'cr-status';
+  btn.disabled    = false;
+  st.textContent  = 'Status: Cleared';
+  st.className    = 'cr-status';
   box.classList.remove('armed');
   updateCrisisStrip();
   recheckAlert();
+
+  if (MP.enabled && _globalStateRef) {
+    _updateDoc(_globalStateRef, {
+      pathogenActive:     false,
+      sicknessMultiplier: 0,
+      pandemicCyclesLeft: 0,
+      _updatedAt:         Date.now(),
+    }).catch(e => console.warn('[BOS] Pandemic clear write:', e.message));
+  }
 }
 
 function hostArmCrash() {
@@ -7095,30 +7263,45 @@ function hostArmCrash() {
   const box = document.getElementById('cb-crash');
   btn.classList.add('armed');
   btn.textContent = '💣 CRASH ARMED — FIRES NEXT CYCLE';
-  btn.disabled = true;
-  st.textContent = 'Status: ARMED — discharges on next cycle';
-  st.className = 'cr-status on';
+  btn.disabled    = true;
+  st.textContent  = 'Status: ARMED — discharges on next cycle';
+  st.className    = 'cr-status on';
   box.classList.add('armed');
   triggerAlert('CRITICAL SYSTEM ALERT: MARKET CRASH INITIATED BY CENTRAL COMMAND — BLACK FRIDAY PROTOCOL ACTIVE — TRADE PORT CRITICAL');
   hlog('📉 BLACK FRIDAY armed — all stocks crash -30% to -50% next cycle.','hr');
   updateCrisisStrip();
+
+  // ── Write to room-scoped globalState so all player clients react ──
+  if (MP.enabled && _globalStateRef) {
+    _updateDoc(_globalStateRef, {
+      marketCrashActive:    true,    // spec field name
+      marketCrashTriggered: true,    // legacy alias
+      _updatedAt:           Date.now(),
+    }).catch(e => console.warn('[BOS] Crash write:', e.message));
+  }
 }
 
 function syncHostCrashUI() {
-  // Called after crash fires
   const btn = document.getElementById('crash-btn');
   const st  = document.getElementById('crash-st');
   const box = document.getElementById('cb-crash');
   if (!btn) return;
   btn.classList.remove('armed');
   btn.textContent = '💣 ARM MARKET CRASH';
-  btn.disabled = false;
-  st.textContent = 'Status: Discharged';
-  st.className = 'cr-status';
+  btn.disabled    = false;
+  st.textContent  = 'Status: Discharged';
+  st.className    = 'cr-status';
   box.classList.remove('armed');
   hlog('📉 Black Friday discharged.','ho');
   updateCrisisStrip();
   recheckAlert();
+
+  if (MP.enabled && _globalStateRef) {
+    _updateDoc(_globalStateRef, {
+      marketCrashTriggered: false,
+      _updatedAt:           Date.now(),
+    }).catch(e => console.warn('[BOS] Crash clear write:', e.message));
+  }
 }
 
 function updateCrisisStrip() {
@@ -7141,147 +7324,65 @@ function recheckAlert() {
     document.getElementById('alert-bar').classList.remove('on');
 }
 
-// ── Sanction (from host) ──
-// ── Sanction a live nation by ID ────────────────────────────
-async function hostSanction(nationId) {
-  const expiry = Date.now() + 60_000;
-
-  if (nationId === 'human' || nationId === MP.nationKey) {
-    // Local player — update in-memory and push
-    G.sanctioned = true; G.sanctionExpiry = expiry;
-    hlog(`⚖ ${G.nationName} SANCTIONED — 60s.`, 'hr');
-    pushGToFirestore();
-  } else if (MP.enabled && _db && MP.roomId) {
-    // Live Firestore nation
-    try {
-      await _updateDoc(_doc(_db, 'rooms', MP.roomId, 'nations', nationId), {
-        sanctioned: true, sanctionExpiry: expiry, _updatedAt: Date.now(),
-      });
-      const n = HOST_NATIONS_CACHE.find(x => x.id === nationId);
-      hlog(`⚖ ${n?.nation || nationId} SANCTIONED via Firestore — 60s.`, 'hr');
-    } catch (e) { console.warn('[BOS] Sanction write:', e.message); }
-  }
-
-  // Expire countdown — refreshes table every second until expiry
-  const si = setInterval(() => {
-    if (Date.now() >= expiry) {
-      clearInterval(si);
-      // Auto-lift for live nations
-      if (nationId !== 'human' && nationId !== MP.nationKey && MP.enabled && _db && MP.roomId) {
-        _updateDoc(_doc(_db, 'rooms', MP.roomId, 'nations', nationId),
-          { sanctioned: false, sanctionExpiry: 0, _updatedAt: Date.now() })
-          .catch(e => console.warn('[BOS] Sanction lift:', e.message));
-      } else { G.sanctioned = false; }
-    }
-    renderTelemTable();
-  }, 1000);
-}
-
-// ── Inject / extract capital from a live nation ──────────────
-async function hostInject(nationId, isLocal) {
-  const inp = document.getElementById('inj-' + nationId);
-  const amt = parseFloat(inp?.value);
-  if (!amt || isNaN(amt)) { showToast('Enter a valid amount.', 'wrn'); return; }
-
-  if (isLocal || nationId === 'human' || nationId === MP.nationKey) {
-    G.gdp = Math.max(0, G.gdp + amt);
-    hlog(`💉 ${amt >= 0 ? '+' : ''}$${f(amt)} → ${G.nationName}`, amt >= 0 ? 'ho' : 'hr');
-    pushGToFirestore();
-  } else if (MP.enabled && _db && MP.roomId) {
-    try {
-      await _updateDoc(_doc(_db, 'rooms', MP.roomId, 'nations', nationId), {
-        gdp: _increment(amt), _updatedAt: Date.now(), _updatedBy: 'HOST_INJECT',
-      });
-      const n = HOST_NATIONS_CACHE.find(x => x.id === nationId);
-      hlog(`💉 ${amt >= 0 ? '+' : ''}$${f(amt)} → ${n?.nation || nationId}`, amt >= 0 ? 'ho' : 'hr');
-    } catch (e) { console.warn('[BOS] Inject write:', e.message); }
-  }
-
-  if (inp) inp.value = '';
-  renderTelemTable();
-}
-
 // ── Telemetry table ──
-// ── Live nations cache for host telemetry ───────────────────
-// Populated by initHostTelemetryListener() via onSnapshot.
-// Separate from LIVE_NATIONS (player-side) so the host view
-// is driven by its own dedicated listener.
-let HOST_NATIONS_CACHE = [];  // [{ id, nationName, commanderName, gdp, population, currentSick, foodStock, mil, eduLevel, totalDeaths, sanctioned, sanctionExpiry }]
-let _hostNationsUnsub  = null;
-
-// ── Module: Host Telemetry Listener ─────────────────────────
-// Mounts ONE onSnapshot on /rooms/{roomId}/nations (or fallback
-// /nations) and on each update rebuilds the cache + re-renders.
-// Call this from openHostAuth() / lobbyStartSimulation() once
-// the host is authenticated.
+// ── Host Telemetry: live listener scoped to /rooms/{roomId}/nations ──
+// Also exposed as initHostTelemetryMatrix (spec alias).
 function initHostTelemetryListener() {
   if (_hostNationsUnsub) { _hostNationsUnsub(); _hostNationsUnsub = null; }
   if (!_db) { console.warn('[BOS] initHostTelemetryListener: Firestore not ready'); return; }
 
-  // ── 1. Dynamic room resolution ───────────────────────────
-  // Priority: MP.roomId (set during session) → URL param → localStorage
+  // Dynamic room resolution (priority: MP state → URL → localStorage)
   const roomId = MP.roomId
     || new URLSearchParams(window.location.search).get('room')
     || (function(){ try { return localStorage.getItem('bos_roomId'); } catch(_){ return null; } })()
     || '';
+  if (roomId && !MP.roomId) MP.roomId = roomId;
 
-  if (roomId && !MP.roomId) MP.roomId = roomId;   // back-fill MP if missing
-
-  // ── 2. Unified path — same collection players write to ───
+  // Strictly scoped to the room nations collection
   const colRef = roomId
-    ? _collection(_db, 'rooms', roomId, 'nations')   // room-scoped (primary)
-    : _collection(_db, 'nations');                    // top-level fallback
+    ? _collection(_db, 'rooms', roomId, 'nations')
+    : _collection(_db, 'nations');   // offline fallback only
 
-  console.info(`[BOS] Host telemetry listening on: ${roomId ? `rooms/${roomId}/nations` : 'nations'}`);
+  console.info(`[BOS] Telemetry listener: ${roomId ? `rooms/${roomId}/nations` : 'nations (fallback)'}`);
 
-  // ── Update the host header to show room code ─────────────
   const sessEl = document.getElementById('h-sess');
-  if (sessEl) sessEl.textContent = roomId ? `ROOM: ${roomId}` : 'SESSION ACTIVE';
+  if (sessEl && roomId) sessEl.textContent = `ROOM: ${roomId}`;
 
-  // ── 3. Live snapshot → cache → render ───────────────────
-  _hostNationsUnsub = _onSnapshot(
-    colRef,
-    (snap) => {
-      HOST_NATIONS_CACHE = [];
-      snap.forEach(docSnap => {
-        const d = docSnap.data();
-        HOST_NATIONS_CACHE.push({
-          id:             docSnap.id,
-          nation:         d.nationName         || docSnap.id,
-          cmdr:           d.commanderName      || '—',
-          gdp:            d.gdp                ?? 0,
-          pop:            d.population         ?? 0,
-          sick:           d.currentSick        ?? 0,
-          food:           d.foodStock          ?? 0,
-          mil:            d.military
-                            ? Object.values(d.military).reduce((s,u)=>s+(u.count||0),0)
-                            : 0,
-          edu:            d.eduLevel           ?? 1,
-          totalDeaths:    d.totalDeaths        ?? 0,
-          sanctioned:     d.sanctioned         ?? false,
-          sanctionExpiry: d.sanctionExpiry     ?? 0,
-          cycle:          d.cycle              ?? 0,
-          isHuman:        true,
-        });
+  _hostNationsUnsub = _onSnapshot(colRef, (snap) => {
+    HOST_NATIONS_CACHE = [];
+    snap.forEach(docSnap => {
+      const d = docSnap.data();
+      HOST_NATIONS_CACHE.push({
+        id:             docSnap.id,
+        nation:         d.nationName      || docSnap.id,
+        cmdr:           d.commanderName   || '—',
+        gdp:            d.gdp             ?? 0,
+        pop:            d.population      ?? 0,
+        sick:           d.currentSick     ?? 0,
+        food:           d.foodStock       ?? 0,
+        mil:            d.military
+                          ? Object.values(d.military).reduce((s,u)=>s+(u.count||0),0)
+                          : 0,
+        edu:            d.eduLevel        ?? 1,
+        totalDeaths:    d.totalDeaths     ?? 0,
+        sanctioned:     d.isSanctioned    ?? d.sanctioned ?? false,
+        cycle:          d.cycle           ?? 0,
+        isHuman:        true,
       });
-      renderTelemTable();
-    },
-    (err) => console.error('[BOS] Host telemetry listener error:', err.message)
-  );
+    });
+    renderTelemTable();
+  }, err => console.error('[BOS] Telemetry snapshot error:', err.message));
 }
 
+// Spec alias
+const initHostTelemetryMatrix = initHostTelemetryListener;
+
 function getAllPlayers() {
-  // In multiplayer host view: use live Firestore cache
-  if (MP.enabled && HOST_NATIONS_CACHE.length > 0) {
-    return HOST_NATIONS_CACHE;
-  }
-  // Single-player or no cache yet: return local player + LIVE_NATIONS
+  if (MP.enabled && HOST_NATIONS_CACHE.length > 0) return HOST_NATIONS_CACHE;
   return [
-    {
-      id:'human', nation:G.nationName, cmdr:G.commanderName, isHuman:true,
+    { id:'human', nation:G.nationName, cmdr:G.commanderName, isHuman:true,
       gdp:G.gdp, pop:G.population, sick:G.currentSick,
-      food:G.foodStock, mil:getTotalPwr(), edu:G.eduLevel, totalDeaths:G.totalDeaths,
-    },
+      food:G.foodStock, mil:getTotalPwr(), edu:G.eduLevel, totalDeaths:G.totalDeaths },
     ...LIVE_NATIONS.map(n => ({ ...n, isHuman:false }))
   ];
 }
@@ -7293,16 +7394,14 @@ function renderTelemTable() {
 
   const players = getAllPlayers();
 
-  // ── Aggregate stats across ALL connected nations ─────────
+  // Aggregate metric cards
   let totalGdp = 0, totalPop = 0, totalDeaths = 0, maxCycle = G.cycle;
   players.forEach(p => {
-    totalGdp    += p.gdp    || 0;
-    totalPop    += p.pop    || 0;
+    totalGdp    += p.gdp         || 0;
+    totalPop    += p.pop         || 0;
     totalDeaths += p.totalDeaths || 0;
     if ((p.cycle || 0) > maxCycle) maxCycle = p.cycle;
   });
-
-  // Update top metric cards
   set('ht-cyc', maxCycle);
   set('ht-gdp', '$' + f(totalGdp));
   set('ht-pop', f(totalPop));
@@ -7317,14 +7416,12 @@ function renderTelemTable() {
     return;
   }
 
-  // ── Per-nation rows ──────────────────────────────────────
   players.forEach(p => {
-    const sanctioned = p.sanctioned && (p.sanctionExpiry || 0) > Date.now();
-    const secsLeft   = sanctioned ? Math.max(0, Math.ceil((p.sanctionExpiry - Date.now()) / 1000)) : 0;
-    const tr         = document.createElement('tr');
-    if (sanctioned) tr.style.background = 'rgba(255,49,49,.05)';
+    const isSanc = p.sanctioned;
+    const tr     = document.createElement('tr');
+    if (isSanc) tr.style.background = 'rgba(255,49,49,.05)';
     tr.innerHTML = `
-      <td><div class="pn-cell">${p.isHuman!==false?'👤':'🌐'} ${p.nation}${sanctioned?`<span class="sanc-badge">SANCTIONED ${secsLeft}s</span>`:''}</div></td>
+      <td><div class="pn-cell">${p.isHuman!==false?'👤':'🌐'} ${p.nation}</div></td>
       <td style="color:rgba(255,170,0,.6);font-size:.65rem;">${p.cmdr}</td>
       <td style="color:var(--ho);font-family:'Orbitron',sans-serif;font-size:.68rem;">$${f(p.gdp)}</td>
       <td style="color:var(--nb);">${f(p.pop)}</td>
@@ -7332,23 +7429,81 @@ function renderTelemTable() {
       <td style="color:${(p.food||0)<10000?'var(--hr)':'var(--ng)'};">${f(p.food||0)} T</td>
       <td style="color:var(--hr);">${f(p.mil||0)}</td>
       <td style="color:var(--tm);">Lv ${p.edu||1}</td>
-      <td>${sanctioned
-        ? `<span style="color:var(--hr);font-size:.62rem;">⛔ SANCTIONED</span>`
-        : `<span style="color:var(--ng);font-size:.62rem;">✓ ACTIVE</span>`}</td>
+      <td>${isSanc
+        ? '<span style="color:var(--hr);font-size:.62rem;">⛔ SANCTIONED</span>'
+        : '<span style="color:var(--ng);font-size:.62rem;">✓ ACTIVE</span>'}</td>
       <td>
-        <div class="inj-row">
-          <input type="number" id="inj-${p.id}" placeholder="±$"
-            style="width:80px;font-size:.67rem;padding:3px 6px;background:rgba(255,170,0,.05);border-color:var(--bd-o);color:var(--ho);">
-          <button class="hbtn hbo" style="font-size:.62rem;padding:3px 8px;"
-            onclick="hostInject('${p.id}',${p.isHuman!==false})">GO</button>
+        <div style="display:flex;gap:4px;flex-wrap:wrap;">
+          <button class="hbtn hbo" style="font-size:.6rem;padding:3px 7px;"
+            onclick="hostInject('${p.id}')">+$250k</button>
+          <button class="hbtn hbr" style="font-size:.6rem;padding:3px 7px;"
+            onclick="hostSanction('${p.id}')" ${isSanc?'disabled':''}>⚖ SANCT</button>
+          <button class="hbtn hbr" style="font-size:.6rem;padding:3px 7px;"
+            onclick="hostTriggerCivilWar('${p.id}')">⚔ WAR</button>
         </div>
-      </td>
-      <td>
-        <button class="hbtn hbr" style="font-size:.6rem;padding:3px 8px;"
-          onclick="hostSanction('${p.id}')" ${sanctioned?'disabled':''}>⚖ SANCTION</button>
       </td>`;
     tbody.appendChild(tr);
   });
+}
+
+// ── Row action: inject +$250k ────────────────────────────────
+async function hostInject(nationId) {
+  if (!firewallAllowWrite()) return;
+  const AMT = 250_000;
+  if (nationId === 'human' || nationId === MP.nationKey) {
+    G.gdp += AMT;
+    plog(`💉 Host injected +$${f(AMT)} into your treasury.`, 'suc');
+    pushGToFirestore();
+  } else if (MP.enabled && _db && MP.roomId) {
+    await _updateDoc(_doc(_db, 'rooms', MP.roomId, 'nations', nationId), {
+      gdp: _increment(AMT), _updatedAt: Date.now(), _updatedBy: 'HOST_INJECT',
+    }).catch(e => console.warn('[BOS] Inject:', e.message));
+    const n = HOST_NATIONS_CACHE.find(x => x.id === nationId);
+    hlog(`💉 +$${f(AMT)} → ${n?.nation || nationId}`, 'ho');
+  }
+}
+
+// ── Row action: sanction (-$150k + isSanctioned flag) ────────
+async function hostSanction(nationId) {
+  if (!firewallAllowWrite()) return;
+  const PENALTY = 150_000;
+  if (nationId === 'human' || nationId === MP.nationKey) {
+    G.gdp = Math.max(0, G.gdp - PENALTY);
+    G.sanctioned = true; G.sanctionExpiry = Date.now() + 60_000;
+    plog(`⚖ Your nation has been SANCTIONED. −$${f(PENALTY)}.`, 'dng');
+    pushGToFirestore();
+  } else if (MP.enabled && _db && MP.roomId) {
+    await _updateDoc(_doc(_db, 'rooms', MP.roomId, 'nations', nationId), {
+      gdp:          _increment(-PENALTY),
+      isSanctioned: true,
+      sanctionExpiry: Date.now() + 60_000,
+      _updatedAt:   Date.now(),
+      _updatedBy:   'HOST_SANCTION',
+    }).catch(e => console.warn('[BOS] Sanction:', e.message));
+    const n = HOST_NATIONS_CACHE.find(x => x.id === nationId);
+    hlog(`⚖ ${n?.nation || nationId} SANCTIONED — $${f(PENALTY)} deducted.`, 'hr');
+  }
+}
+
+// ── Row action: civil war (-$100k, -10k pop, +10k deaths) ────
+async function hostTriggerCivilWar(nationId) {
+  if (nationId === 'human' || nationId === MP.nationKey) {
+    G.gdp        = Math.max(0, G.gdp - 100_000);
+    G.population = Math.max(1, G.population - 10_000);
+    G.totalDeaths += 10_000;
+    plog('⚔ Civil War triggered on your nation.', 'dng');
+    pushGToFirestore();
+  } else if (MP.enabled && _db && MP.roomId) {
+    await _updateDoc(_doc(_db, 'rooms', MP.roomId, 'nations', nationId), {
+      gdp:         _increment(-100_000),
+      population:  _increment(-10_000),
+      totalDeaths: _increment(10_000),
+      _updatedAt:  Date.now(),
+      _updatedBy:  'HOST_CIVIL_WAR',
+    }).catch(e => console.warn('[BOS] Civil war:', e.message));
+    const n = HOST_NATIONS_CACHE.find(x => x.id === nationId);
+    hlog(`⚔ CIVIL WAR triggered on ${n?.nation || nationId}.`, 'hr');
+  }
 }
 
 // tickAI removed — rival nation stats update live via Firestore onSnapshot (LIVE_NATIONS)
@@ -8072,6 +8227,456 @@ initGame = function() {
 };
 
 // ── Refresh nations panel on every player UI update ──
+// ═══════════════════════════════════════════════════════════
+// CHEMICAL BAY ENGINE
+// ═══════════════════════════════════════════════════════════
+
+// ── Raw material definitions ─────────────────────────────────
+const RAW_DEFS = [
+  { id:'phosphate',   name:'Phosphate',   icon:'🪨', color:'#a8a0ff' },
+  { id:'biomass',     name:'Biomass',     icon:'🌿', color:'#39ff14' },
+  { id:'hydrocarbon', name:'Hydrocarbon', icon:'⛽', color:'#ffd700' },
+  { id:'silicon',     name:'Silicon',     icon:'💎', color:'#00f2ff' },
+];
+
+// ── Finished product definitions (2 per raw) ─────────────────
+// buff: effect applied on "Use" button click
+const FINISHED_DEFS = [
+  // Phosphate → 2 products
+  { id:'fertiliser',    name:'Fertiliser',      raw:'phosphate',   icon:'🌾',
+    buff:'Doubles crop yield for 2 cycles.',
+    onUse: () => { G.cropYieldMultiplier = 2; G.cropYieldCyclesLeft = 2;
+      plog('🌾 Fertiliser applied — crop yield ×2 for 2 cycles.','suc'); } },
+  { id:'explosive',     name:'Explosives',      raw:'phosphate',   icon:'💥',
+    buff:'+500 Military Power permanently.',
+    onUse: () => { G.military.tanks = (G.military.tanks||{count:0}); G.military.tanks.count+=5;
+      plog('💥 Explosives deployed — +5 tanks added to military.','suc'); } },
+  // Biomass → 2 products
+  { id:'biofuel',       name:'Biofuel',          raw:'biomass',    icon:'⚡',
+    buff:'Tech Park efficiency +20% for 3 cycles.',
+    onUse: () => { G.techParkEfficiency = Math.min(100, G.techParkEfficiency+20);
+      plog('⚡ Biofuel boost — Tech Park efficiency +20%.','suc'); } },
+  { id:'vaccine',       name:'Vaccine',          raw:'biomass',    icon:'💉',
+    buff:'Cures current pandemic and prevents next pathogen event.',
+    onUse: () => { G.pandemicActive=false; G.pandemicCyclesLeft=0; G.pandemicImmune=true;
+      plog('💉 Vaccine administered — pandemic cleared.','suc'); } },
+  // Hydrocarbon → 2 products
+  { id:'jetfuel',       name:'Jet Fuel',         raw:'hydrocarbon', icon:'✈',
+    buff:'Unlocks Jet Runway functionality for 5 cycles.',
+    onUse: () => { G.jetFuelCycles=(G.jetFuelCycles||0)+5;
+      plog('✈ Jet Fuel active — runway unlocked for 5 cycles.','suc'); } },
+  { id:'plasteel',      name:'Plasteel Plating', raw:'hydrocarbon', icon:'🛡',
+    buff:'+15% firewall defense permanently.',
+    onUse: () => { G.firewallDefense=Math.min(100,G.firewallDefense+15);
+      plog('🛡 Plasteel applied — Firewall +15%.','suc'); } },
+  // Silicon → 2 products
+  { id:'microchip',     name:'Microchip Array',  raw:'silicon',    icon:'🔬',
+    buff:'R&D success rate +10% for next 3 projects.',
+    onUse: () => { G.rdvBonusChance=(G.rdvBonusChance||0)+0.10; G.rdvBonusCount=3;
+      plog('🔬 Microchip Array installed — R&D +10% for 3 projects.','suc'); } },
+  { id:'emp',           name:'EMP Payload',       raw:'silicon',   icon:'🌩',
+    buff:'One-shot: disables target nation\'s firewall to 0% for 2 cycles.',
+    onUse: () => { plog('🌩 EMP Payload ready — use Cyber Attack to deploy.','suc');
+      G.empReady = true; } },
+];
+
+// ── Chemical Bay G-state (added at runtime) ──────────────────
+// G.rawInventory   = { phosphate:0, biomass:0, hydrocarbon:0, silicon:0 }
+// G.finInventory   = { fertiliser:0, explosive:0, biofuel:0, ... }
+// G.selectedRaws   = []   // up to 2 ids
+function _initChemState() {
+  if (!G.rawInventory)  G.rawInventory  = { phosphate:0, biomass:0, hydrocarbon:0, silicon:0 };
+  if (!G.finInventory)  G.finInventory  = Object.fromEntries(FINISHED_DEFS.map(d=>[d.id,0]));
+  if (!G.selectedRaws)  G.selectedRaws  = [];
+}
+
+// ── Cycle harvest: add 150 raw units per selected material ────
+function runChemicalHarvestCycle() {
+  _initChemState();
+  G.selectedRaws.forEach(rawId => {
+    G.rawInventory[rawId] = (G.rawInventory[rawId]||0) + 150;
+    plog(`⚗ Harvested 150 units of ${rawId}.`,'suc');
+  });
+}
+
+// ── Toggle raw material selection (max 2) ────────────────────
+function toggleRawSelection(rawId) {
+  if (!firewallAllowWrite()) return;
+  _initChemState();
+  const idx = G.selectedRaws.indexOf(rawId);
+  if (idx >= 0) {
+    G.selectedRaws.splice(idx, 1);
+  } else {
+    if (G.selectedRaws.length >= 2) {
+      showToast('Maximum 2 raw materials per cycle.','wrn'); return;
+    }
+    G.selectedRaws.push(rawId);
+  }
+  renderChemicalBay();
+  updatePlayerUI();
+}
+
+// ── Refine: 100 raw + $25k → 50 finished ────────────────────
+function refineProduct(finId) {
+  if (!firewallAllowWrite()) return;
+  _initChemState();
+  const def = FINISHED_DEFS.find(d=>d.id===finId);
+  if (!def) return;
+  if ((G.rawInventory[def.raw]||0) < 100) {
+    showToast(`Need 100 units of ${def.raw} (have ${G.rawInventory[def.raw]||0}).`,'dng'); return;
+  }
+  if (G.gdp < 25_000) { showToast('Insufficient GDP ($25,000 required).','dng'); return; }
+  G.rawInventory[def.raw] -= 100;
+  G.gdp -= 25_000;
+  G.finInventory[finId]   = (G.finInventory[finId]||0) + 50;
+  plog(`⚗ Refined 50× ${def.name} (−100 ${def.raw}, −$25,000).`,'suc');
+  renderChemicalBay();
+  updatePlayerUI();
+}
+
+// ── Use/Activate a finished product ─────────────────────────
+function useFinishedProduct(finId) {
+  if (!firewallAllowWrite()) return;
+  _initChemState();
+  const def = FINISHED_DEFS.find(d=>d.id===finId);
+  if (!def) return;
+  if ((G.finInventory[finId]||0) < 1) { showToast('None in inventory.','dng'); return; }
+  G.finInventory[finId]--;
+  def.onUse();
+  renderChemicalBay();
+  updatePlayerUI();
+}
+
+// ── Render the Chemical Bay UI ───────────────────────────────
+function renderChemicalBay() {
+  _initChemState();
+
+  // Raw selector grid
+  const rawGrid = document.getElementById('raw-selector-grid');
+  if (rawGrid) {
+    rawGrid.innerHTML = '';
+    RAW_DEFS.forEach(r => {
+      const sel      = G.selectedRaws.includes(r.id);
+      const atMax    = G.selectedRaws.length >= 2 && !sel;
+      const qty      = G.rawInventory[r.id]||0;
+      const div      = document.createElement('div');
+      div.className  = `raw-card${sel?' selected':''}${atMax?' disabled':''}`;
+      div.onclick    = atMax ? null : () => toggleRawSelection(r.id);
+      div.innerHTML  = `<div class="raw-icon">${r.icon}</div>
+        <div class="raw-name">${r.name}</div>
+        <div class="raw-qty">${qty} units</div>
+        ${sel?'<div style="font-size:.55rem;color:var(--ng);margin-top:3px;">✓ HARVESTING</div>':''}`;
+      rawGrid.appendChild(div);
+    });
+  }
+
+  // Finished products grid
+  const finGrid = document.getElementById('finished-products-grid');
+  if (finGrid) {
+    finGrid.innerHTML = '';
+    FINISHED_DEFS.forEach(def => {
+      const rawQty  = G.rawInventory[def.raw]||0;
+      const finQty  = G.finInventory[def.id]||0;
+      const canRef  = rawQty >= 100 && G.gdp >= 25_000;
+      const canUse  = finQty >= 1;
+      const div     = document.createElement('div');
+      div.className = `fin-card${canUse?' available':''}`;
+      div.innerHTML = `
+        <div class="fin-name">${def.icon} ${def.name}</div>
+        <div class="fin-qty">In stock: ${finQty} · Raw (${def.raw}): ${rawQty}</div>
+        <div style="font-size:.58rem;color:var(--td);margin-bottom:6px;">${def.buff}</div>
+        <div class="fin-btns">
+          <button class="fin-btn-refine" onclick="refineProduct('${def.id}')" ${canRef?'':'disabled'}>
+            ⚗ REFINE (100 raw + $25k)
+          </button>
+          <button class="fin-btn-use" onclick="useFinishedProduct('${def.id}')" ${canUse?'':'disabled'}>
+            ⚡ ACTIVATE
+          </button>
+          <button class="fin-btn-list" onclick="openListingDialog('${def.id}')" ${canUse?'':'disabled'}>
+            ↑ LIST
+          </button>
+        </div>`;
+      finGrid.appendChild(div);
+    });
+    // Populate product select for P2P panel
+    const sel = document.getElementById('p2p-product-sel');
+    if (sel) {
+      sel.innerHTML = '<option value="">— Select Product —</option>';
+      FINISHED_DEFS.forEach(d => {
+        if ((G.finInventory[d.id]||0)>0) {
+          const opt = document.createElement('option');
+          opt.value = d.id; opt.textContent = `${d.icon} ${d.name} (${G.finInventory[d.id]} in stock)`;
+          sel.appendChild(opt);
+        }
+      });
+    }
+  }
+
+  renderP2PBoard();
+}
+
+// ── P2P Exchange ─────────────────────────────────────────────
+let _p2pUnsub = null;
+const P2P_COL = () => MP.roomId ? `rooms/${MP.roomId}/marketListings` : 'marketListings';
+
+async function createMarketListing() {
+  if (!firewallAllowWrite()) return;
+  _initChemState();
+  const prodId = document.getElementById('p2p-product-sel')?.value;
+  const qty    = parseInt(document.getElementById('p2p-qty-inp')?.value||'0');
+  const price  = parseFloat(document.getElementById('p2p-price-inp')?.value||'0');
+  if (!prodId) { showToast('Select a product.','wrn'); return; }
+  if (qty<1)   { showToast('Enter a valid quantity.','wrn'); return; }
+  if (price<1) { showToast('Enter a price greater than $0.','wrn'); return; }
+  if ((G.finInventory[prodId]||0)<qty) { showToast('Insufficient stock.','dng'); return; }
+
+  const def = FINISHED_DEFS.find(d=>d.id===prodId);
+  G.finInventory[prodId]-=qty;
+
+  if (MP.enabled && _db) {
+    try {
+      const colRef = _collection(_db,'rooms',MP.roomId,'marketListings');
+      await (_addDoc||_setDoc)(colRef,{
+        prodId, qty, price, totalValue: qty*price,
+        sellerKey: MP.nationKey, sellerName: G.nationName,
+        createdAt: Date.now(),
+      });
+      plog(`↑ Listed ${qty}× ${def.name} at $${f(price)} each.`,'suc');
+    } catch(e){ G.finInventory[prodId]+=qty; showToast('Listing failed: '+e.message,'dng'); return; }
+  } else {
+    // Offline: store in G.p2pListings for local testing
+    G.p2pListings = G.p2pListings||[];
+    G.p2pListings.push({ id:'local_'+Date.now(), prodId, qty, price,
+      sellerKey:MP.nationKey||'local', sellerName:G.nationName });
+  }
+  document.getElementById('p2p-qty-inp').value='';
+  document.getElementById('p2p-price-inp').value='';
+  renderChemicalBay();
+  updatePlayerUI();
+}
+
+async function buyMarketListing(listingId, sellerKey, qty, price, prodId) {
+  if (!firewallAllowWrite()) return;
+  const total = qty*price;
+  if (G.gdp<total) { showToast(`Need $${f(total)}.`,'dng'); return; }
+  if (!MP.enabled||!_db) { showToast('Firestore required for P2P purchase.','wrn'); return; }
+
+  const listRef  = _doc(_db,'rooms',MP.roomId,'marketListings',listingId);
+  const selfRef  = _doc(_db,'rooms',MP.roomId,'nations',MP.nationKey);
+  const sellerRef= _doc(_db,'rooms',MP.roomId,'nations',sellerKey);
+
+  try {
+    await _runTransaction(_db, async txn => {
+      const lSnap = await txn.get(listRef);
+      if (!lSnap.exists()) throw new Error('Listing no longer available.');
+      txn.delete(listRef);
+      txn.update(selfRef,   { gdp: _increment(-total), _updatedAt: Date.now() });
+      txn.update(sellerRef, { gdp: _increment(total),  _updatedAt: Date.now() });
+    });
+    _initChemState();
+    G.gdp -= total;
+    G.finInventory[prodId] = (G.finInventory[prodId]||0)+qty;
+    const def = FINISHED_DEFS.find(d=>d.id===prodId);
+    plog(`↓ Bought ${qty}× ${def?.name||prodId} for $${f(total)}.`,'suc');
+    showToast(`Purchase complete! +${qty} ${def?.name||prodId}`,'suc');
+    renderChemicalBay();
+    updatePlayerUI();
+  } catch(e) { showToast('Purchase failed: '+e.message,'dng'); }
+}
+
+async function cancelMarketListing(listingId, prodId, qty) {
+  if (!firewallAllowWrite()) return;
+  if (!MP.enabled||!_db) return;
+  try {
+    await _deleteDoc(_doc(_db,'rooms',MP.roomId,'marketListings',listingId));
+    _initChemState();
+    G.finInventory[prodId]=(G.finInventory[prodId]||0)+qty;
+    plog(`↩ Listing cancelled — ${qty}× ${prodId} returned to inventory.`,'wrn');
+    renderChemicalBay();
+    updatePlayerUI();
+  } catch(e) { showToast('Cancel failed: '+e.message,'dng'); }
+}
+
+function openListingDialog(finId) {
+  const sel = document.getElementById('p2p-product-sel');
+  if (sel) sel.value = finId;
+  document.getElementById('p2p-qty-inp')?.focus();
+}
+
+// Render the live P2P board
+function renderP2PBoard() {
+  const tbody = document.getElementById('p2p-order-tbody');
+  if (!tbody) return;
+  // In MP mode the board is populated by the Firestore listener; in offline mode render from G.p2pListings
+  if (!MP.enabled) {
+    const listings = G.p2pListings||[];
+    if (listings.length===0) {
+      tbody.innerHTML='<tr><td colspan="6" style="text-align:center;padding:16px;color:var(--td);">No listings yet.</td></tr>';
+    } else {
+      tbody.innerHTML='';
+      listings.forEach(l=>{
+        const def=FINISHED_DEFS.find(d=>d.id===l.prodId);
+        const isOwn=l.sellerKey===MP.nationKey||l.sellerKey==='local';
+        const tr=document.createElement('tr');
+        tr.innerHTML=`<td>${def?.icon||''} ${def?.name||l.prodId}</td>
+          <td><span class="p2p-badge${isOwn?' own':''}">${l.sellerName||'Unknown'}</span></td>
+          <td>${l.qty}</td><td>$${f(l.price)}</td><td>$${f(l.qty*l.price)}</td>
+          <td>${isOwn
+            ?`<button class="btn bbr" style="font-size:.6rem;padding:3px 8px;" onclick="cancelMarketListing('${l.id}','${l.prodId}',${l.qty})">✕ CANCEL</button>`
+            :`<button class="btn bbg" style="font-size:.6rem;padding:3px 8px;" onclick="buyMarketListing('${l.id}','${l.sellerKey}',${l.qty},${l.price},'${l.prodId}')">↓ BUY</button>`
+          }</td>`;
+        tbody.appendChild(tr);
+      });
+    }
+  }
+}
+
+// Attach Firestore listener for the P2P board (called from enterPlayerShell)
+function attachP2PListener() {
+  if (!MP.enabled||!_db||!MP.roomId) return;
+  if (_p2pUnsub) { _p2pUnsub(); _p2pUnsub=null; }
+  const colRef=_collection(_db,'rooms',MP.roomId,'marketListings');
+  _p2pUnsub=_onSnapshot(colRef,snap=>{
+    const tbody=document.getElementById('p2p-order-tbody');
+    if (!tbody) return;
+    if (snap.empty) {
+      tbody.innerHTML='<tr><td colspan="6" style="text-align:center;padding:16px;color:var(--td);">No listings yet.</td></tr>';
+      return;
+    }
+    tbody.innerHTML='';
+    snap.forEach(docSnap=>{
+      const l=docSnap.data(); const lid=docSnap.id;
+      const def=FINISHED_DEFS.find(d=>d.id===l.prodId);
+      const isOwn=l.sellerKey===MP.nationKey;
+      const tr=document.createElement('tr');
+      tr.innerHTML=`<td>${def?.icon||''} ${def?.name||l.prodId}</td>
+        <td><span class="p2p-badge${isOwn?' own':''}">${l.sellerName||'?'}</span></td>
+        <td>${l.qty}</td><td>$${f(l.price)}</td><td>$${f(l.qty*l.price)}</td>
+        <td>${isOwn
+          ?`<button class="btn bbr" style="font-size:.6rem;padding:3px 8px;" onclick="cancelMarketListing('${lid}','${l.prodId}',${l.qty})">✕ CANCEL</button>`
+          :`<button class="btn bbg" style="font-size:.6rem;padding:3px 8px;" onclick="buyMarketListing('${lid}','${l.sellerKey}',${l.qty},${l.price},'${l.prodId}')">↓ BUY</button>`
+        }</td>`;
+      tbody.appendChild(tr);
+    });
+  });
+  if (typeof sessionState!=='undefined') sessionState.unsubscribers?.push(_p2pUnsub);
+}
+
+// Wire chem harvest into fiscal cycle
+const _origRunCycleM3 = runFiscalCycle;
+runFiscalCycle = function() { _origRunCycleM3(); runChemicalHarvestCycle(); };
+
+// ═══════════════════════════════════════════════════════════
+// PODIUM / GAME FINISH ENGINE
+// ═══════════════════════════════════════════════════════════
+
+const RAW_SPOT  = { phosphate:500, biomass:300, hydrocarbon:800, silicon:1200 }; // $/unit
+const FIN_SPOT  = 2500; // $/finished unit (all products)
+const FOOD_SPOT = 50;   // $/ton
+
+async function hostFinishGame() {
+  if (!confirm('End the game and show the final podium to all players?')) return;
+
+  // Broadcast game-over to all clients via globalState
+  if (MP.enabled && _globalStateRef) {
+    await _updateDoc(_globalStateRef, {
+      gameOver: true, gameOverAt: Date.now(),
+      _updatedAt: Date.now(),
+    }).catch(e => console.warn('[BOS] Finish game write:', e.message));
+  }
+
+  // Compute and show podium locally for host
+  await _computeAndShowPodium();
+}
+
+async function _computeAndShowPodium() {
+  let nations = [];
+  if (MP.enabled && _db && MP.roomId) {
+    try { nations = await queryAllNations(); } catch(_) {}
+  }
+  // Always include local player
+  const localNW = _calcNetWorth(G);
+  const all = [
+    { name:G.nationName, cmdr:G.commanderName, ...localNW, isLocal:true },
+    ...nations
+      .filter(n=>n.nationKey!==MP.nationKey)
+      .map(n=>({ name:n.nationName, cmdr:n.commanderName||'—',
+        liquidity:n.gdp||0, rawValue:0, finValue:0,
+        foodValue:(n.foodStock||0)*FOOD_SPOT,
+        infraValue:0, total:n.gdp||0, isLocal:false })),
+  ].sort((a,b)=>b.total-a.total);
+
+  _renderPodium(all);
+
+  // Freeze UI on local player
+  _freezeGameUI();
+}
+
+function _calcNetWorth(g) {
+  _initChemState();
+  const liquidity  = g.gdp || 0;
+  const rawValue   = Object.entries(g.rawInventory||{}).reduce((s,[k,v])=>s+(v*(RAW_SPOT[k]||0)),0);
+  const finValue   = Object.entries(g.finInventory||{}).reduce((s,[,v])=>s+v*FIN_SPOT,0);
+  const foodValue  = (g.foodReservesTons||0)*FOOD_SPOT;
+  const infraValue = (g.buildings||[]).reduce((s,b)=>s+(b.cost||0),0);
+  return { liquidity, rawValue, finValue, foodValue, infraValue,
+           total: liquidity+rawValue+finValue+foodValue+infraValue };
+}
+
+function _renderPodium(all) {
+  const medals  = ['👑','🥈','🥉'];
+  const rowsEl  = document.getElementById('podium-rows');
+  const subEl   = document.getElementById('podium-sub');
+  if (!rowsEl) return;
+
+  if (subEl && all[0]) {
+    subEl.textContent = `SUPREME RULER: ${all[0].name.toUpperCase()} — $${f(all[0].total)} TOTAL NET WORTH`;
+  }
+
+  rowsEl.innerHTML = '';
+  all.slice(0,3).forEach((n,i)=>{
+    const cls = i===0?'gold':i===1?'silver':'';
+    const div = document.createElement('div');
+    div.className = `podium-row ${cls}`;
+    div.innerHTML = `
+      <div class="podium-rank">${medals[i]||`#${i+1}`}</div>
+      <div class="podium-info">
+        <div class="podium-nation">${n.name} <span style="color:var(--td);font-size:.6rem;">— ${n.cmdr}</span></div>
+        <div class="podium-detail">
+          💰 Treasury: $${f(n.liquidity)} &nbsp;·&nbsp;
+          ⚗ Chemicals: $${f(n.rawValue+n.finValue)} &nbsp;·&nbsp;
+          🌾 Food: $${f(n.foodValue)} &nbsp;·&nbsp;
+          🏗 Infra: $${f(n.infraValue)}
+        </div>
+      </div>
+      <div class="podium-total">$${f(n.total)}</div>`;
+    rowsEl.appendChild(div);
+  });
+
+  document.getElementById('podium-overlay').classList.add('open');
+}
+
+function _freezeGameUI() {
+  // Disable all action buttons to prevent further writes
+  document.querySelectorAll('button.btn, button.hbtn, button.fin-btn-refine, button.fin-btn-use')
+    .forEach(btn => {
+      if (!btn.onclick?.toString().includes('podium')) btn.disabled = true;
+    });
+  stopTimer();
+  plog('⏹ GAME OVER — All actions frozen. Final standings displayed.','dng');
+  showToast('GAME OVER — Podium is live!','suc');
+}
+
+// Wire game-over signal into global state onSnapshot (already handled by _handleGlobalStateTermination)
+// but also check gameOver field for the new Finish Game flow
+const _origHandleGST = typeof _handleGlobalStateTermination==='function' ? _handleGlobalStateTermination : null;
+_handleGlobalStateTermination = function(data) {
+  if (_origHandleGST) _origHandleGST(data);
+  if (data.gameOver && !document.getElementById('podium-overlay')?.classList.contains('open')) {
+    _computeAndShowPodium();
+  }
+};
+
 const _origUpdatePlayerUI = updatePlayerUI;
 // noSync=true when called FROM an onSnapshot callback — suppresses the
 // pushGToFirestore() that would otherwise re-trigger the listener
